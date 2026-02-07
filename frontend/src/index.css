@@ -1,1 +1,25 @@
 @import "tailwindcss";
+
+:root {
+  --wa-bg-main: #ECE5DD;        /* Chat background */
+  --wa-bg-secondary: #FFFFFF;  /* Cards, input area */
+  --wa-header: #075E54;        /* Top bar */
+  --wa-accent: #25D366;        /* Primary green */
+  --wa-text-main: #111B21;     /* Main text */
+  --wa-text-secondary: #667781;/* Sub text */
+  --wa-border: #E9EDEF;        /* Borders */
+  --wa-sent-msg: #DCF8C6;      /* Sent message bubble */
+  --wa-received-msg: #FFFFFF; /* Received message bubble */
+}
+
+.dark {
+  --wa-bg-main: #0B141A;        /* Chat background */
+  --wa-bg-secondary: #1F2C34;  /* Cards, input */
+  --wa-header: #202C33;        /* Top bar */
+  --wa-accent: #25D366;        /* WhatsApp green */
+  --wa-text-main: #E9EDEF;     /* Main text */
+  --wa-text-secondary: #8696A0;/* Sub text */
+  --wa-border: #2A3942;        /* Borders */
+  --wa-sent-msg: #005C4B;      /* Sent message bubble */
+  --wa-received-msg: #1F2C34;  /* Received message bubble */
+}
