@@ -2,7 +2,6 @@ import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import Login from "../authComponent/Login";
 import Register from "../authComponent/Register";
-import ForgotPasswod from "../authComponent/ForgotPassword";
 
 const variants = {
   enter: (direction) => ({
@@ -139,20 +138,7 @@ export default function Auth() {
               </motion.div>
             )}
 
-            {activeForm === "forgot" && (
-              <motion.div
-                key="forgot"
-                custom={direction}
-                variants={variants}
-                initial="enter"
-                animate="center"
-                exit="exit"
-                transition={{ duration: 0.6, ease: [0.4, 0, 0.2, 1] }}
-                className="w-full flex justify-center"
-              >
-                <ForgotPasswod onBack={() => switchForm("login")} />
-              </motion.div>
-            )}
+           
           </AnimatePresence>
         </div>
       </div>
