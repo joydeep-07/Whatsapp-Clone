@@ -3,7 +3,7 @@ import Dashboard from "../components/Dashboard";
 import Auth from "../components/Auth";
 
 const Home = () => {
-  const [isLogin, setIsLogin] = useState(false);
+  const [isLogin, setIsLogin] = useState(true);
 
   return <div>{isLogin ? <Dashboard /> : <Auth />}</div>;
 };

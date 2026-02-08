@@ -1,5 +1,5 @@
 import React from "react";
-import { CircleDashed, MessageSquare, Phone } from "lucide-react";
+import { CircleDashed, MessageSquare, Phone, Settings, User } from "lucide-react";
 
 const SidePanel = () => {
   return (
@@ -19,14 +19,12 @@ const SidePanel = () => {
 
       {/* BOTTOM SET */}
       <div className="flex flex-col items-center gap-5">
+      
         <button>
-          <MessageSquare />
+          <Settings />
         </button>
         <button>
-          <Phone />
-        </button>
-        <button>
-          <CircleDashed />
+          <User />
         </button>
       </div>
     </div>
