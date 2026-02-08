@@ -6,6 +6,8 @@ import {
   Paperclip,
   Mic,
   Send,
+  Check,
+  CheckCheck,
 } from "lucide-react";
 import React, { useState, useRef, useEffect } from "react";
 
@@ -94,13 +96,16 @@ const Chat = () => {
             className={`flex ${msg.isOwn ? "justify-end" : "justify-start"}`}
           >
             <div
-              className={`max-w-[70%] px-4 py-2.5 rounded-2xl text-sm shadow-sm ${
+              className={`max-w-[70%] px-4 py-2.5 flex gap-1 items-end rounded-2xl text-sm shadow-sm ${
                 msg.isOwn
                   ? "bg-[#d9fdd3] dark:bg-[#005c4b] rounded-br-none text-black dark:text-white"
                   : "bg-white dark:bg-[#202c33] rounded-bl-none text-black dark:text-white"
               }`}
             >
-              {msg.text}
+              {msg.text}{" "}
+              {msg.isOwn && (
+                <CheckCheck size={15} className="text-[var(--accent-blue)] " />
+              )}
             </div>
           </div>
         ))}
