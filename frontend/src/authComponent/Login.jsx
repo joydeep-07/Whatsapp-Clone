@@ -30,67 +30,75 @@ const Login = ({ onRegister }) => {
     <div className="w-full flex items-center justify-center">
       <form
         onSubmit={handleSubmit(onSubmit)}
-        className="w-80 md:w-96 flex flex-col bg-[var(--wa-bg-secondary)] p-6 rounded-xl border border-[var(--wa-border)]"
+        className={`
+          w-80 md:w-96 flex flex-col
+          bg-[var(--bg-main)] 
+          p-6 rounded-xl 
+          border border-[var(--border-light)]/50
+          shadow-[var(--shadow-md)]
+        `}
         noValidate
       >
-        <h2 className="text-3xl font-medium text-[var(--wa-text-main)]">
-          Sign <span className="text-[var(--wa-accent)]">In</span>
+        <h2 className="text-3xl font-medium text-[var(--text-main)] font-heading">
+          Sign <span className="text-[var(--accent-primary)]">In</span>
         </h2>
 
-        <p className="text-sm text-[var(--wa-text-secondary)] mt-2">
+        <p className="text-sm text-[var(--text-secondary)] mt-2">
           Welcome back! Please login
         </p>
 
-        {/* Google Button (UI only) */}
+        {/* Google Button */}
         <button
           type="button"
-          className="
+          className={`
             w-full mt-6 h-11 rounded-full
-            flex items-center justify-center
-            bg-[var(--wa-bg-secondary)]
-            border border-[var(--wa-border)]
-          "
+            flex items-center justify-center gap-2
+            bg-[var(--bg-main)]
+            border border-[var(--border-light)]
+            hover:bg-[var(--bg-tertiary)]
+            transition-[var(--transition-fast)]
+          `}
         >
-          <FcGoogle className="text-xl mr-2" />
-          <span className="text-sm text-[var(--wa-text-main)]">
+          <FcGoogle className="text-xl" />
+          <span className="text-sm font-medium text-[var(--text-main)]">
             Continue with Google
           </span>
         </button>
 
         {/* Divider */}
         <div className="flex items-center gap-4 my-6">
-          <div className="flex-1 h-px bg-[var(--wa-border)]" />
-          <p className="text-xs text-[var(--wa-text-secondary)]">
+          <div className="flex-1 h-px bg-[var(--border-light)]" />
+          <p className="text-xs text-[var(--text-muted)]">
             or login with email
           </p>
-          <div className="flex-1 h-px bg-[var(--wa-border)]" />
+          <div className="flex-1 h-px bg-[var(--border-light)]" />
         </div>
 
-        {/* Email */}
-        <div className="flex items-center gap-2 h-11 px-4 rounded-full border border-[var(--wa-border)]">
-          <IoMailOutline className="text-[var(--wa-text-secondary)]" />
+        {/* Email Field */}
+        <div className="flex items-center gap-2 h-11 px-4 rounded-full border border-[var(--border-light)] focus-within:border-[var(--accent-primary)] transition-[var(--transition-fast)]">
+          <IoMailOutline className="text-[var(--text-muted)] text-lg" />
           <input
             type="email"
             placeholder="Email"
-            className="w-full bg-transparent outline-none text-sm text-[var(--wa-text-main)]"
+            className="w-full bg-transparent outline-none text-sm text-[var(--text-main)] placeholder-[var(--text-muted)]"
             {...register("email", {
               required: "Email is required",
             })}
           />
         </div>
         {errors.email && (
-          <p className="text-xs text-red-500 mt-1 pl-4">
+          <p className="text-xs text-[var(--error)] mt-1 pl-4">
             {errors.email.message}
           </p>
         )}
 
-        {/* Password */}
-        <div className="flex items-center gap-2 h-11 px-4 rounded-full mt-4 border border-[var(--wa-border)]">
-          <IoLockClosedOutline className="text-[var(--wa-text-secondary)]" />
+        {/* Password Field */}
+        <div className="flex items-center gap-2 h-11 px-4 rounded-full mt-4 border border-[var(--border-light)] focus-within:border-[var(--accent-primary)] transition-[var(--transition-fast)]">
+          <IoLockClosedOutline className="text-[var(--text-muted)] text-lg" />
           <input
             type={showPassword ? "text" : "password"}
             placeholder="Password"
-            className="w-full bg-transparent outline-none text-sm text-[var(--wa-text-main)]"
+            className="w-full bg-transparent outline-none text-sm text-[var(--text-main)] placeholder-[var(--text-muted)]"
             {...register("password", {
               required: "Password is required",
             })}
@@ -98,44 +106,50 @@ const Login = ({ onRegister }) => {
           <button
             type="button"
             onClick={() => setShowPassword(!showPassword)}
-            className="text-[var(--wa-text-secondary)]"
+            className="text-[var(--text-muted)] hover:text-[var(--text-secondary)] transition-colors"
           >
             {showPassword ? <FaRegEyeSlash /> : <FaRegEye />}
           </button>
         </div>
         {errors.password && (
-          <p className="text-xs text-red-500 mt-1 pl-4">
+          <p className="text-xs text-[var(--error)] mt-1 pl-4">
             {errors.password.message}
           </p>
         )}
 
-        {/* Remember Me */}
-        <div className="flex items-center mt-4 text-sm text-[var(--wa-text-secondary)]">
-          <label className="flex items-center gap-2 cursor-pointer">
+        {/* Remember Me + Submit */}
+        <div className="flex items-center justify-between mt-5 text-sm">
+          <label className="flex items-center gap-2 cursor-pointer text-[var(--text-secondary)]">
             <input
               type="checkbox"
-              className="accent-[var(--wa-accent)]"
+              className="accent-[var(--accent-primary)] h-4 w-4"
               {...register("rememberMe")}
             />
             Remember me
           </label>
         </div>
 
-        {/* Submit */}
         <button
           type="submit"
-          className="mt-6 h-11 rounded-full bg-[var(--wa-accent)] text-white font-medium hover:opacity-90"
+          className={`
+            mt-6 h-11 rounded-full 
+            bg-[var(--accent-primary)] 
+            text-white font-medium 
+            hover:bg-[var(--accent-hover)] 
+            transition-[var(--transition-base)]
+            shadow-[var(--shadow-sm)]
+          `}
         >
           Login
         </button>
 
-        {/* Register */}
-        <p className="text-sm text-center mt-4 text-[var(--wa-text-secondary)]">
+        {/* Register link */}
+        <p className="text-sm text-center mt-5 text-[var(--text-secondary)]">
           Don’t have an account?{" "}
           <button
             type="button"
             onClick={onRegister}
-            className="text-[var(--wa-accent)] font-medium"
+            className="text-[var(--accent-primary)] font-medium hover:underline"
           >
             Sign up
           </button>
