@@ -96,16 +96,22 @@ const Chat = () => {
             className={`flex ${msg.isOwn ? "justify-end" : "justify-start"}`}
           >
             <div
-              className={`max-w-[70%] px-4 py-2.5 flex gap-1 items-end rounded-2xl text-sm shadow-sm ${
+              className={`max-w-[70%] px-4 py-2.5 flex gap-4 items-end rounded-2xl text-sm shadow-sm ${
                 msg.isOwn
                   ? "bg-[#d9fdd3] dark:bg-[#005c4b] rounded-br-none text-black dark:text-white"
                   : "bg-white dark:bg-[#202c33] rounded-bl-none text-black dark:text-white"
               }`}
             >
-              {msg.text}{" "}
-              {msg.isOwn && (
-                <CheckCheck size={15} className="text-[var(--accent-blue)] " />
-              )}
+              {msg.text}
+              <div className="flex items-center gap-2">
+                <p className="text-xs font-medium">08:24 PM</p>
+                {msg.isOwn && (
+                  <CheckCheck
+                    size={15}
+                    className="text-[var(--accent-blue)] "
+                  />
+                )}
+              </div>
             </div>
           </div>
         ))}
