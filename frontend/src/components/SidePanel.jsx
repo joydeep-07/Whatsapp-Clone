@@ -1,30 +1,30 @@
 import React from "react";
-import { CircleDashed, MessageSquare, Phone, Settings, User } from "lucide-react";
+import { CircleDashed, MessageSquare, Settings, User } from "lucide-react";
 import ThemeToggle from "./ThemeToggle";
 
-const SidePanel = () => {
+const SidePanel = ({ setActivePanel }) => {
   return (
-    <div className="sidepanel absolute bg-[var(--bg-secondary)] h-screen w-15 flex flex-col justify-between py-10">
-      {/* TOP SET */}
+    <div className="sidepanel bg-[var(--bg-secondary)] h-screen w-15 flex flex-col justify-between py-10">
+      {/* TOP */}
       <div className="flex flex-col items-center gap-5">
-        <button>
+        <button onClick={() => setActivePanel("chats")}>
           <MessageSquare />
         </button>
-        <button>
-          <Phone />
-        </button>
-        <button>
+
+        <button onClick={() => setActivePanel("status")}>
           <CircleDashed />
         </button>
       </div>
 
-      {/* BOTTOM SET */}
+      {/* BOTTOM */}
       <div className="flex flex-col items-center gap-5">
-      <ThemeToggle/>
-        <button>
+        <ThemeToggle />
+
+        <button onClick={() => setActivePanel("settings")}>
           <Settings />
         </button>
-        <button>
+
+        <button onClick={() => setActivePanel("profile")}>
           <User />
         </button>
       </div>
