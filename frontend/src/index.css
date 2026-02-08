@@ -23,3 +23,47 @@
   --wa-sent-msg: #005C4B;      /* Sent message bubble */
   --wa-received-msg: #1F2C34;  /* Received message bubble */
 }
+
+
+@font-face {
+  font-family: "Marcellus";
+  src: url("./assets/fonts/Marcellus-Regular.ttf") format("truetype");
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Oswald";
+  src: url("./assets/fonts/Oswald.ttf") format("truetype");
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+/* Font utility classes */
+.font-heading {
+  font-family: "Marcellus", serif;
+}
+
+.font-body {
+  font-family: "Oswald", sans-serif;
+}
+
+
+/* Autofill Transparent background */
+input:-webkit-autofill,
+input:-webkit-autofill:hover,
+input:-webkit-autofill:focus,
+textarea:-webkit-autofill,
+select:-webkit-autofill {
+  -webkit-text-fill-color: var(--text-main);
+  -webkit-box-shadow: 0 0 0px 1000px transparent inset;
+  transition: background-color 9999s ease-in-out 0s;
+}
+
+
+.dark input:-webkit-autofill,
+.dark textarea:-webkit-autofill {
+  -webkit-text-fill-color: var(--text-main);
+}

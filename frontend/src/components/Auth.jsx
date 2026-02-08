@@ -62,11 +62,12 @@ export default function Auth() {
 
           <div className="pb-15 max-w-md">
             <h2 className="text-4xl font-medium font-heading text-[var(--text-secondary)]/90 leading-tight">
-              Store,{" "}
+              Chat
               <span className="text-[var(--accent-primary)]/90">
-                Share & Collaborate
+                Connect & Share
               </span>
-              <br /> Without Limits
+              <br />
+              Anytime, Anywhere
             </h2>
             <p className="text-sm pb-10 max-w-md text-[var(--text-secondary)]/80 leading-relaxed">
               A secure cloud workspace built for storing, sharing, and
@@ -137,8 +138,6 @@ export default function Auth() {
                 <Register onLogin={() => switchForm("login")} />
               </motion.div>
             )}
-
-           
           </AnimatePresence>
         </div>
       </div>
