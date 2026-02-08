@@ -12,20 +12,20 @@
   --text-muted: #868686;
 
   /* Borders & Dividers */
-   --border-light: #e0e0e0;
+  --border-light: #e0e0e0;
 
   /* Accent (Your specified green palette) */
-  --accent-primary: rgb(45, 146, 45);  
-  --accent-hover: rgb(20, 100, 20);   
+  --accent-primary: rgb(45, 146, 45);
+  --accent-hover: rgb(20, 100, 20);
   --accent-soft: #588157;
 
   /* blue Button */
-  --blue-button: #6366F1;
+  --blue-button: #6366f1;
 
   /* Status Colors - Harmonized with accent */
-  --success: rgb(26, 124, 26);         
-  --warning: #b45309;                 
-  --error: #b91c1c;                  
+  --success: rgb(26, 124, 26);
+  --warning: #b45309;
+  --error: #b91c1c;
 
   /* Shadows */
   --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.1);
@@ -36,7 +36,7 @@
   --transition-base: 0.5s ease;
 
   /* Scrollbar Thumb */
-  --scroll-thumb : rgb(185, 185, 185);
+  --scroll-thumb: rgb(185, 185, 185);
 }
 
 .dark {
@@ -54,15 +54,15 @@
   --border-light: #1f1f1f;
 
   /* Accent (Adjusted for dark mode) */
-  --accent-primary: #41b13d;          
-  --accent-hover: rgb(49, 110, 49);  
+  --accent-primary: #41b13d;
+  --accent-hover: rgb(49, 110, 49);
   --accent-soft: #588157;
 
-    /* blue Button */
-  --blue-button: #6366F1;
+  /* blue Button */
+  --blue-button: #6366f1;
 
   /* Status Colors */
-  --success: #66bb6a;                 
+  --success: #66bb6a;
   --warning: #d97706;
   --error: #ef4444;
 
@@ -71,9 +71,8 @@
   --shadow-md: 0 8px 25px rgba(102, 187, 106, 0.15);
 
   /* Scrollbar Thumb */
-  --scroll-thumb : rgb(27, 27, 27);
+  --scroll-thumb: rgb(27, 27, 27);
 }
-
 
 @font-face {
   font-family: "Marcellus";
@@ -100,7 +99,6 @@
   font-family: "Oswald", sans-serif;
 }
 
-
 /* Autofill Transparent background */
 input:-webkit-autofill,
 input:-webkit-autofill:hover,
@@ -112,12 +110,21 @@ select:-webkit-autofill {
   transition: background-color 9999s ease-in-out 0s;
 }
 
-
 .dark input:-webkit-autofill,
 .dark textarea:-webkit-autofill {
   -webkit-text-fill-color: var(--text-main);
 }
 
-::-webkit-scrollbar{
+::-webkit-scrollbar {
   display: none;
+}
+
+body {
+  background-color: var(--bg-main);
+  color: var(--text-main);
+  transition: ease-in-out;
+}
+
+button {
+  cursor: pointer;
 }

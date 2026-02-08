@@ -1,5 +1,6 @@
 import React from "react";
 import { CircleDashed, MessageSquare, Phone, Settings, User } from "lucide-react";
+import ThemeToggle from "./ThemeToggle";
 
 const SidePanel = () => {
   return (
@@ -19,7 +20,7 @@ const SidePanel = () => {
 
       {/* BOTTOM SET */}
       <div className="flex flex-col items-center gap-5">
-      
+      <ThemeToggle/>
         <button>
           <Settings />
         </button>
