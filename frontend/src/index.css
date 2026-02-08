@@ -1,27 +1,77 @@
 @import "tailwindcss";
 
 :root {
-  --wa-bg-main: #ECE5DD;        /* Chat background */
-  --wa-bg-secondary: #FFFFFF;  /* Cards, input area */
-  --wa-header: #075E54;        /* Top bar */
-  --wa-accent: #25D366;        /* Primary green */
-  --wa-text-main: #111B21;     /* Main text */
-  --wa-text-secondary: #667781;/* Sub text */
-  --wa-border: #E9EDEF;        /* Borders */
-  --wa-sent-msg: #DCF8C6;      /* Sent message bubble */
-  --wa-received-msg: #FFFFFF; /* Received message bubble */
+  /* Backgrounds */
+  --bg-main: #ffffff;
+  --bg-secondary: #cfcfcf;
+  --bg-tertiary: #f3f4f6;
+
+  /* Text */
+  --text-main: #1c1c1c;
+  --text-secondary: #353535;
+  --text-muted: #868686;
+
+  /* Borders & Dividers */
+   --border-light: #e0e0e0;
+
+  /* Accent (Your specified green palette) */
+  --accent-primary: rgb(45, 146, 45);  
+  --accent-hover: rgb(20, 100, 20);   
+  --accent-soft: #588157;
+
+  /* blue Button */
+  --blue-button: #6366F1;
+
+  /* Status Colors - Harmonized with accent */
+  --success: rgb(26, 124, 26);         
+  --warning: #b45309;                 
+  --error: #b91c1c;                  
+
+  /* Shadows */
+  --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.1);
+  --shadow-md: 0 4px 12px rgba(0, 0, 0, 0.08);
+
+  /* Transitions */
+  --transition-fast: 0.2s ease;
+  --transition-base: 0.5s ease;
+
+  /* Scrollbar Thumb */
+  --scroll-thumb : rgb(185, 185, 185);
 }
 
 .dark {
-  --wa-bg-main: #0B141A;        /* Chat background */
-  --wa-bg-secondary: #1F2C34;  /* Cards, input */
-  --wa-header: #202C33;        /* Top bar */
-  --wa-accent: #25D366;        /* WhatsApp green */
-  --wa-text-main: #E9EDEF;     /* Main text */
-  --wa-text-secondary: #8696A0;/* Sub text */
-  --wa-border: #2A3942;        /* Borders */
-  --wa-sent-msg: #005C4B;      /* Sent message bubble */
-  --wa-received-msg: #1F2C34;  /* Received message bubble */
+  /* Backgrounds */
+  --bg-main: #0a0a0a;
+  --bg-secondary: #1d1d1d;
+  --bg-tertiary: #2d2d2d;
+
+  /* Text */
+  --text-main: #eaeaea;
+  --text-secondary: #dbdbdb;
+  --text-muted: #b5b5b5;
+
+  /* Borders & Dividers */
+  --border-light: #1f1f1f;
+
+  /* Accent (Adjusted for dark mode) */
+  --accent-primary: #41b13d;          
+  --accent-hover: rgb(49, 110, 49);  
+  --accent-soft: #588157;
+
+    /* blue Button */
+  --blue-button: #6366F1;
+
+  /* Status Colors */
+  --success: #66bb6a;                 
+  --warning: #d97706;
+  --error: #ef4444;
+
+  /* Shadows */
+  --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.8);
+  --shadow-md: 0 8px 25px rgba(102, 187, 106, 0.15);
+
+  /* Scrollbar Thumb */
+  --scroll-thumb : rgb(27, 27, 27);
 }
 
 

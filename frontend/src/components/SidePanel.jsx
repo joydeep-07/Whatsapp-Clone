@@ -1,11 +1,36 @@
-import React from 'react'
+import React from "react";
+import { CircleDashed, MessageSquare, Phone } from "lucide-react";
 
 const SidePanel = () => {
   return (
-    <div>
-      <div className="sidepanel bg-rose-300 h-screen w-15"></div>
+    <div className="sidepanel absolute bg-[var(--bg-secondary)] h-screen w-15 flex flex-col justify-between py-10">
+      {/* TOP SET */}
+      <div className="flex flex-col items-center gap-5">
+        <button>
+          <MessageSquare />
+        </button>
+        <button>
+          <Phone />
+        </button>
+        <button>
+          <CircleDashed />
+        </button>
+      </div>
+
+      {/* BOTTOM SET */}
+      <div className="flex flex-col items-center gap-5">
+        <button>
+          <MessageSquare />
+        </button>
+        <button>
+          <Phone />
+        </button>
+        <button>
+          <CircleDashed />
+        </button>
+      </div>
     </div>
   );
-}
+};
 
-export default SidePanel
+export default SidePanel;
