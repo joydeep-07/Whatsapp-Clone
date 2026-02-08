@@ -4,11 +4,10 @@ import Chatlist from "../ui/Chatlist";
 import Profile from "../ui/Profile";
 import Settings from "../ui/Settings";
 import Status from "../ui/Status";
+import Chat from "./Chat";
 
 const Dashboard = () => {
-  const [activePanel, setActivePanel] = useState("chats"); // default
-
-
+  const [activePanel, setActivePanel] = useState("chats");
 
   const renderPanel = () => {
     switch (activePanel) {
@@ -25,8 +24,6 @@ const Dashboard = () => {
     }
   };
 
-
-
   return (
     <div className="flex">
       <SidePanel setActivePanel={setActivePanel} />
@@ -35,7 +32,9 @@ const Dashboard = () => {
         {renderPanel()}
       </div>
 
-      <div className="right h-screen w-3/4 bg-[var(--bg-main)]"></div>
+      <div className="right h-screen w-3/4 bg-[var(--bg-main)]">
+        <Chat />
+      </div>
     </div>
   );
 };
