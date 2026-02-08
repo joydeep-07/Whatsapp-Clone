@@ -1,64 +1,81 @@
-import { CheckCheck, CirclePlus, EllipsisVertical, Search, TicketX } from "lucide-react";
+import { CheckCheck, CirclePlus, EllipsisVertical, Search } from "lucide-react";
 import React from "react";
+import users from "../assets/users";
 
 const Chatlist = () => {
   return (
-    <>
-      <div className="h-screen p-4 flex flex-col">
-        <div className=" flex justify-between mb-4">
+    <div className="h-screen flex flex-col bg-[var(--bg-main)] text-[var(--text-main)]">
+      {/* Fixed header section */}
+      <div className="shrink-0 px-4 pt-5 pb-4 space-y-4 border-b border-[var(--border-light)]">
+        {/* Title + actions */}
+        <div className="flex items-center justify-between">
           <h1 className="font-body text-xl tracking-wider">Chats</h1>
-          <div className="flex gap-5 justify-center">
-            <CirclePlus />
-            <EllipsisVertical />
+          <div className="flex items-center gap-5 text-[var(--text-secondary)]">
+            <CirclePlus className="w-6 h-6 cursor-pointer hover:text-[var(--accent-primary)] transition-colors" />
+            <EllipsisVertical className="w-6 h-6 cursor-pointer hover:text-[var(--accent-primary)] transition-colors" />
           </div>
         </div>
 
-        <div className="flex mb-3 items-center border pl-4 gap-2 border-[var(--border-light)] h-[40px] rounded-full overflow-hidden max-w-md w-full">
-          <Search className="text-[var(--text-secondary)] " />
+        {/* Search */}
+        <div className="flex items-center border border-[var(--border-light)] pl-4 gap-3 h-10 rounded-full bg-[var(--bg-tertiary)]/40 overflow-hidden">
+          <Search className="text-[var(--text-muted)]" size={18} />
           <input
             type="text"
             placeholder="Search"
-            className="w-full h-full outline-none text-[var(--text-secondary)] placeholder-gray-500 text-sm"
+            className="flex-1 h-full bg-transparent outline-none text-[var(--text-secondary)] placeholder-[var(--text-muted)] text-sm"
           />
         </div>
 
-        <div className="badges flex gap-2 mb-3">
-          <button className="py-1 px-4 rounded-full text-[var(--text-main)] bg-[var(--accent-primary)]/50 text-xs font-medium border border-[var(--border-light)] ">
+        {/* Filter badges */}
+        <div className="flex gap-2 flex-wrap">
+          <button className="py-1 px-4 rounded-full text-xs font-medium bg-[var(--accent-primary)]/20 text-[var(--accent-primary)] border border-[var(--accent-primary)]/30">
             All
           </button>
-
-          <button className="py-1 px-4 rounded-full text-[var(--text-main)] bg-[var(--bg-secondary)]/50 text-xs font-medium border border-[var(--border-light)] ">
+          <button className="py-1 px-4 rounded-full text-xs font-medium bg-[var(--bg-secondary)] text-[var(--text-secondary)] border border-[var(--border-light)]">
             Unread
           </button>
-
-          <button className="py-1 px-4 rounded-full text-[var(--text-main)] bg-[var(--bg-secondary)]/50 text-xs font-medium border border-[var(--border-light)] ">
+          <button className="py-1 px-4 rounded-full text-xs font-medium bg-[var(--bg-secondary)] text-[var(--text-secondary)] border border-[var(--border-light)]">
             Group
           </button>
         </div>
+      </div>
 
-        <div className="chatlist py-2 flex justify-start items-center gap-2">
-          <div className="profile">
-            <img
-              className="h-12 rounded-full"
-              src="https://i.pinimg.com/736x/19/1c/c9/191cc99599578fb10a08289d42471cad.jpg"
-              alt=""
-            />
-          </div>
+      {/* Scrollable users list */}
+      <div className="flex-1 overflow-y-auto px-3 py-2 scrollbar-thin scrollbar-thumb-[var(--scroll-thumb)] scrollbar-track-transparent">
+        <div className="flex flex-col gap-1">
+          {users.map((user) => (
+            <div
+              key={user.id}
+              className="flex items-center gap-3 py-3 px-3 -mx-3 hover:bg-[var(--bg-tertiary)]/30 cursor-pointer transition-colors duration-[var(--transition-fast)]"
+            >
+              <div className="flex-shrink-0 relative">
+                <img
+                  className="h-12 w-12 rounded-full object-cover border border-[var(--border-light)]"
+                  src={user.profile}
+                  alt={user.name}
+                />
+                {user.isOnline && (
+                  <span className="absolute bottom-0 right-0 h-3 w-3 bg-[var(--success)] rounded-full border-2 border-[var(--bg-main)]"></span>
+                )}
+              </div>
 
-          <div className="name">
-            <h1 className="font-semibold">Hritik Roashan</h1>
-            <p className="text-xs flex gap-1 justify-start items-center">
-             
-              <span>
-               
-                <CheckCheck size={17} className="text-sky-500" />
-              </span>
-              Lorem ipsum dolor sit amet consectetur.
-            </p>
-          </div>
+              <div className="min-w-0 flex-1">
+                <h2 className="font-semibold text-[var(--text-main)] truncate">
+                  {user.name}
+                </h2>
+                <p className="text-sm text-[var(--text-secondary)] flex items-center gap-1.5 truncate">
+                  <CheckCheck
+                    size={16}
+                    className="text-[var(--accent-blue)] flex-shrink-0"
+                  />
+                  {user.message}
+                </p>
+              </div>
+            </div>
+          ))}
         </div>
       </div>
-    </>
+    </div>
   );
 };
 

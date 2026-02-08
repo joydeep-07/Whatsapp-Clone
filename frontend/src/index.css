@@ -20,7 +20,7 @@
   --accent-soft: #588157;
 
   /* blue Button */
-  --blue-button: #6366f1;
+   --accent-blue: #0f8dd5;
 
   /* Status Colors - Harmonized with accent */
   --success: rgb(26, 124, 26);
@@ -59,7 +59,7 @@
   --accent-soft: #588157;
 
   /* blue Button */
-  --blue-button: #6366f1;
+  --accent-blue: #0f8dd5;
 
   /* Status Colors */
   --success: #66bb6a;
