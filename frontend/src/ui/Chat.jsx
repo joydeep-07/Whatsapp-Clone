@@ -10,9 +10,9 @@ import {
   User,
 } from "lucide-react";
 import React, { useState, useRef, useEffect } from "react";
+import ContactInfo from "./ContactInfo";
 
 const Chat = ({ user }) => {
-  // Safety guard (extra protection)
   if (!user) {
     return (
       <div className="h-screen flex items-center justify-center text-[var(--text-muted)]">
@@ -21,7 +21,6 @@ const Chat = ({ user }) => {
     );
   }
 
-  // Messages state (later you’ll make this user-based)
   const [messages, setMessages] = useState([
     {
       id: 1,
@@ -36,6 +35,7 @@ const Chat = ({ user }) => {
   ]);
 
   const [inputValue, setInputValue] = useState("");
+  const [isContactOpen, setIsContactOpen] = useState(false);
 
   const messagesEndRef = useRef(null);
 
@@ -43,28 +43,33 @@ const Chat = ({ user }) => {
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
   }, [messages]);
 
+  useEffect(() => {
+    const escHandler = (e) => e.key === "Escape" && setIsContactOpen(false);
+    window.addEventListener("keydown", escHandler);
+    return () => window.removeEventListener("keydown", escHandler);
+  }, []);
+
   const sendMessage = () => {
     if (!inputValue.trim()) return;
 
     setMessages((prev) => [
       ...prev,
-      {
-        id: Date.now(),
-        text: inputValue,
-        isOwn: true,
-      },
+      { id: Date.now(), text: inputValue, isOwn: true },
     ]);
 
     setInputValue("");
   };
 
   return (
-    <div className="h-screen flex flex-col bg-[var(--bg-main)] text-[var(--text-main)]">
+    <div className="h-screen flex flex-col bg-[var(--bg-main)] text-[var(--text-main)] relative">
       {/* TOP BAR */}
       <div className="shrink-0 bg-[var(--bg-secondary)]/30 px-4 py-3 border-b border-[var(--border-light)]/60">
         <div className="flex items-center justify-between">
           {/* LEFT */}
-          <div className="flex items-center gap-3">
+          <div
+            className="flex items-center gap-3 cursor-pointer"
+            onClick={() => setIsContactOpen(true)}
+          >
             {user.profile ? (
               <img
                 src={user.profile}
@@ -76,6 +81,7 @@ const Chat = ({ user }) => {
                 <User />
               </div>
             )}
+
             <div className="leading-tight">
               <h1 className="text-sm font-medium">{user.name}</h1>
               <p className="text-xs text-[var(--text-muted)] font-medium">
@@ -84,11 +90,14 @@ const Chat = ({ user }) => {
             </div>
           </div>
 
-          {/* RIGHT ACTIONS */}
+          {/* RIGHT */}
           <div className="flex items-center gap-6 text-[var(--text-secondary)]">
-            <Video className="cursor-pointer hover:text-[var(--accent-primary)] transition-colors" />
-            <Phone className="cursor-pointer hover:text-[var(--accent-primary)] transition-colors" />
-            <MoreVertical className="cursor-pointer hover:text-[var(--accent-primary)] transition-colors" />
+            <Video className="cursor-pointer hover:text-[var(--accent-primary)]" />
+            <Phone className="cursor-pointer hover:text-[var(--accent-primary)]" />
+            <MoreVertical
+              className="cursor-pointer hover:text-[var(--accent-primary)]"
+              onClick={() => setIsContactOpen(true)}
+            />
           </div>
         </div>
       </div>
@@ -103,13 +112,13 @@ const Chat = ({ user }) => {
             <div
               className={`max-w-[70%] px-4 py-2.5 flex gap-4 items-end rounded-2xl text-sm shadow-sm ${
                 msg.isOwn
-                  ? "bg-[#d9fdd3] dark:bg-[#005c4b] rounded-br-none text-black dark:text-white"
-                  : "bg-white dark:bg-[#202c33] rounded-bl-none text-black dark:text-white"
+                  ? "bg-[#d9fdd3] dark:bg-[#005c4b] rounded-br-none"
+                  : "bg-white dark:bg-[#202c33] rounded-bl-none"
               }`}
             >
               {msg.text}
-              <div className="flex items-center gap-2">
-                <p className="text-xs font-medium">08:24 PM</p>
+              <div className="flex items-center gap-2 text-xs">
+                08:24 PM
                 {msg.isOwn && (
                   <CheckCheck size={15} className="text-[var(--accent-blue)]" />
                 )}
@@ -120,32 +129,37 @@ const Chat = ({ user }) => {
         <div ref={messagesEndRef} />
       </div>
 
-      {/* BOTTOM INPUT */}
+      {/* INPUT */}
       <div className="shrink-0 border-t border-[var(--border-light)] bg-[var(--bg-main)] px-4 py-3">
         <div className="flex items-center gap-3 bg-[var(--bg-secondary)] rounded-3xl px-4 py-[10px]">
-          <Smile size={18} className="text-[var(--text-secondary)]" />
-          <Paperclip size={18} className="text-[var(--text-secondary)]" />
+          <Smile size={18} />
+          <Paperclip size={18} />
 
           <input
-            type="text"
             value={inputValue}
             onChange={(e) => setInputValue(e.target.value)}
             onKeyDown={(e) => e.key === "Enter" && sendMessage()}
             placeholder="Type a message..."
-            className="flex-1 bg-transparent outline-none text-[15px]"
+            className="flex-1 bg-transparent outline-none"
           />
 
           {inputValue.trim() ? (
             <Send
-              size={18}
               onClick={sendMessage}
               className="cursor-pointer text-[var(--accent-primary)]"
             />
           ) : (
-            <Mic size={18} className="text-[var(--text-secondary)]" />
+            <Mic />
           )}
         </div>
       </div>
+
+      {/* CONTACT INFO MODAL */}
+      <ContactInfo
+        isOpen={isContactOpen}
+        onClose={() => setIsContactOpen(false)}
+        user={user}
+      />
     </div>
   );
 };
