@@ -49,13 +49,12 @@ const Chatlist = ({ onSelectUser }) => {
               key={user.id}
               className="flex items-center gap-3 py-3 px-3 -mx-3 hover:bg-[var(--bg-tertiary)]/30 cursor-pointer transition-colors duration-[var(--transition-fast)]"
             >
+              {/* Avatar */}
               <div className="flex-shrink-0 relative">
                 {user.profile === "" ? (
-                  <>
-                    <div className="h-12 w-12 bg-[var(--bg-secondary)] rounded-full flex justify-center items-center border border-[var(--border-light)]">
-                      <User className="text-[var(--text-secondary)]/70 " />
-                    </div>
-                  </>
+                  <div className="h-12 w-12 bg-[var(--bg-secondary)] rounded-full flex justify-center items-center border border-[var(--border-light)]">
+                    <User className="text-[var(--text-secondary)]/70" />
+                  </div>
                 ) : (
                   <img
                     className="h-12 w-12 rounded-full object-cover border border-[var(--border-light)]"
@@ -65,22 +64,27 @@ const Chatlist = ({ onSelectUser }) => {
                 )}
 
                 {user.isOnline && (
-                  <span className="absolute bottom-0 right-0 h-3 w-3 bg-[var(--success)] rounded-full border-2 border-[var(--bg-main)]"></span>
+                  <span className="absolute bottom-0 right-0 h-3 w-3 bg-[var(--success)] rounded-full border-2 border-[var(--bg-main)]" />
                 )}
               </div>
 
+              {/* Name + message */}
               <div className="min-w-0 flex-1">
-                <h2 className="font-semibold text-[var(--text-main)] truncate">
-                  {user.name}
-                </h2>
+                <h2 className="font-semibold truncate">{user.name}</h2>
                 <p className="text-sm text-[var(--text-secondary)] flex items-center gap-1.5 truncate">
-                  <CheckCheck
-                    size={16}
-                    className="text-[var(--accent-blue)] flex-shrink-0"
-                  />
+                  <CheckCheck size={16} className="text-[var(--accent-blue)]" />
                   {user.message}
                 </p>
               </div>
+
+              {/* ✅ EXTREME RIGHT unread badge */}
+              {user.isUnread && (
+                <div className="ml-auto flex items-center">
+                  <span className="min-w-[20px] h-[20px] flex items-center justify-center text-[11px] font-bold bg-[var(--success)] text-[var(--bg-main)] rounded-full">
+                    2
+                  </span>
+                </div>
+              )}
             </div>
           ))}
         </div>
