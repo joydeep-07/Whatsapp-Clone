@@ -72,7 +72,7 @@ const users = [
       "https://i.pinimg.com/736x/69/0f/fe/690ffe07fab9681f211570a2ad51ed18.jpg",
     isOnline: false,
     isUnread: false,
-    isSeen: true,
+    isSeen: false,
   },
   {
     id: 6,
