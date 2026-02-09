@@ -82,14 +82,15 @@ const Chatlist = ({ onSelectUser, onAddContact }) => {
             <div className="flex-1 min-w-0">
               <h2 className="font-semibold truncate">{user.name}</h2>
               <p className="text-sm text-[var(--text-secondary)] truncate flex items-center gap-1">
-                <CheckCheck size={16} />
+                {!user.isUnread && <CheckCheck size={16} />}
+
                 {user.message}
               </p>
             </div>
 
             {/* Unread badge */}
             {user.isUnread && (
-              <span className="ml-auto min-w-[20px] h-[20px] flex items-center justify-center text-[11px] font-bold bg-[var(--success)] text-[var(--bg-main)] rounded-full">
+              <span className="ml-auto relative min-w-[20px] h-[20px] flex items-center justify-center text-[11px] font-bold bg-[var(--success)] text-[var(--bg-main)] rounded-full">
                 2
               </span>
             )}
