@@ -82,7 +82,16 @@ const Chatlist = ({ onSelectUser, onAddContact }) => {
             <div className="flex-1 min-w-0">
               <h2 className="font-semibold truncate">{user.name}</h2>
               <p className="text-sm text-[var(--text-secondary)] truncate flex items-center gap-1">
-                {!user.isUnread && <CheckCheck size={16} />}
+                {!user.isUnread && (
+                  <CheckCheck
+                    size={16}
+                    className={`transition-colors duration-200 ${
+                      user.isSeen
+                        ? "text-[var(--accent-blue)] "
+                        : "text-[var(--text-secondary)]"
+                    }`}
+                  />
+                )}
 
                 {user.message}
               </p>

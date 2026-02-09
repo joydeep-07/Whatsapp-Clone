@@ -12,6 +12,7 @@ const users = [
       "https://i.pinimg.com/736x/82/81/e1/8281e186c1de47e78199c5fee86dc0df.jpg",
     isOnline: true,
     isUnread: true,
+    isSeen: false,
   },
   {
     id: 2,
@@ -26,6 +27,7 @@ const users = [
       "https://i.pinimg.com/736x/03/5d/70/035d705b245fb0c1f36e0fbbfd643ba7.jpg",
     isOnline: true,
     isUnread: false,
+    isSeen: false,
   },
   {
     id: 3,
@@ -40,6 +42,7 @@ const users = [
       "https://i.pinimg.com/736x/df/51/42/df5142b30ec25991609b95ec14de4117.jpg",
     isOnline: true,
     isUnread: true,
+    isSeen: false,
   },
   {
     id: 4,
@@ -54,6 +57,7 @@ const users = [
       "https://i.pinimg.com/736x/da/d8/b1/dad8b15f49a796af139ccfd6c41347ff.jpg",
     isOnline: false,
     isUnread: false,
+    isSeen: true,
   },
   {
     id: 5,
@@ -68,6 +72,7 @@ const users = [
       "https://i.pinimg.com/736x/69/0f/fe/690ffe07fab9681f211570a2ad51ed18.jpg",
     isOnline: false,
     isUnread: false,
+    isSeen: true,
   },
   {
     id: 6,
@@ -81,6 +86,7 @@ const users = [
     profile: "",
     isOnline: false,
     isUnread: true,
+    isSeen: false,
   },
   {
     id: 7,
@@ -95,6 +101,7 @@ const users = [
       "https://i.pinimg.com/736x/d8/82/4e/d8824e19f1501d2e480e7be0f7ff4c07.jpg",
     isOnline: true,
     isUnread: true,
+    isSeen: false,
   },
   {
     id: 8,
@@ -108,6 +115,7 @@ const users = [
     profile: "",
     isOnline: false,
     isUnread: false,
+    isSeen: true,
   },
   {
     id: 9,
@@ -121,6 +129,7 @@ const users = [
     profile: "",
     isOnline: true,
     isUnread: true,
+    isSeen: false,
   },
   {
     id: 10,
@@ -134,6 +143,7 @@ const users = [
       "https://i.pinimg.com/736x/57/92/26/579226d8bd177d4da8278d9aa2fbca01.jpg",
     isOnline: true,
     isUnread: false,
+    isSeen: true,
   },
   {
     id: 11,
@@ -148,6 +158,7 @@ const users = [
       "https://i.pinimg.com/736x/8b/73/0b/8b730b32ac5ed08e9c1e1b4531561873.jpg",
     isOnline: true,
     isUnread: true,
+    isSeen: false,
   },
   {
     id: 12,
@@ -162,6 +173,7 @@ const users = [
       "https://i.pinimg.com/736x/ea/5f/26/ea5f263a2ad37e1741ae393fe6ab0adb.jpg",
     isOnline: true,
     isUnread: false,
+    isSeen: true,
   },
 ];
 
