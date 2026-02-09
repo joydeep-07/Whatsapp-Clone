@@ -1,8 +1,8 @@
-import { CheckCheck, CirclePlus, EllipsisVertical, Search } from "lucide-react";
+import { CheckCheck, CirclePlus, EllipsisVertical, Search, User } from "lucide-react";
 import React from "react";
 import users from "../assets/users";
 
-const Chatlist = () => {
+const Chatlist = ({ onSelectUser }) => {
   return (
     <div className="h-screen flex flex-col bg-[var(--bg-main)] text-[var(--text-main)]">
       {/* Fixed header section */}
@@ -45,15 +45,25 @@ const Chatlist = () => {
         <div className="flex flex-col gap-1">
           {users.map((user) => (
             <div
+              onClick={() => onSelectUser(user)}
               key={user.id}
               className="flex items-center gap-3 py-3 px-3 -mx-3 hover:bg-[var(--bg-tertiary)]/30 cursor-pointer transition-colors duration-[var(--transition-fast)]"
             >
               <div className="flex-shrink-0 relative">
-                <img
-                  className="h-12 w-12 rounded-full object-cover border border-[var(--border-light)]"
-                  src={user.profile}
-                  alt={user.name}
-                />
+                {user.profile === "" ? (
+                  <>
+                    <div className="h-12 w-12 bg-[var(--bg-secondary)] rounded-full flex justify-center items-center border border-[var(--border-light)]">
+                      <User className="text-[var(--text-secondary)]/70 " />
+                    </div>
+                  </>
+                ) : (
+                  <img
+                    className="h-12 w-12 rounded-full object-cover border border-[var(--border-light)]"
+                    src={user.profile}
+                    alt={user.name}
+                  />
+                )}
+
                 {user.isOnline && (
                   <span className="absolute bottom-0 right-0 h-3 w-3 bg-[var(--success)] rounded-full border-2 border-[var(--bg-main)]"></span>
                 )}

@@ -4,15 +4,17 @@ import Chatlist from "../ui/Chatlist";
 import Profile from "../ui/Profile";
 import Settings from "../ui/Settings";
 import Status from "../ui/Status";
-import Chat from "./Chat";
+import Chat from "../ui/Chat";
+import SelectChat from "./SelectChat";
 
 const Dashboard = () => {
   const [activePanel, setActivePanel] = useState("chats");
+  const [selectedUser, setSelectedUser] = useState(null);
 
   const renderPanel = () => {
     switch (activePanel) {
       case "chats":
-        return <Chatlist />;
+        return <Chatlist onSelectUser={setSelectedUser} />;
       case "status":
         return <Status />;
       case "settings":
@@ -20,9 +22,10 @@ const Dashboard = () => {
       case "profile":
         return <Profile />;
       default:
-        return <Chatlist />;
+        return <Chatlist onSelectUser={setSelectedUser} />;
     }
   };
+
 
   return (
     <div className="flex">
@@ -33,7 +36,13 @@ const Dashboard = () => {
       </div>
 
       <div className="right h-screen w-3/4 bg-[var(--bg-main)]">
-        <Chat />
+        {selectedUser ? (
+          <Chat user={selectedUser} />
+        ) : (
+         <>
+         <SelectChat/>
+         </>
+        )}
       </div>
     </div>
   );

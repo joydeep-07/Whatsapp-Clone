@@ -6,21 +6,21 @@ import {
   Paperclip,
   Mic,
   Send,
-  Check,
   CheckCheck,
 } from "lucide-react";
 import React, { useState, useRef, useEffect } from "react";
 
-const Chat = () => {
-  const user = {
-    id: 1,
-    name: "John Doe",
-    profile:
-      "https://i.pinimg.com/736x/19/1c/c9/191cc99599578fb10a08289d42471cad.jpg",
-    isOnline: true,
-  };
+const Chat = ({ user }) => {
+  // Safety guard (extra protection)
+  if (!user) {
+    return (
+      <div className="h-screen flex items-center justify-center text-[var(--text-muted)]">
+        Select a chat to start messaging
+      </div>
+    );
+  }
 
-  // Messages state
+  // Messages state (later you’ll make this user-based)
   const [messages, setMessages] = useState([
     {
       id: 1,
@@ -36,10 +36,8 @@ const Chat = () => {
 
   const [inputValue, setInputValue] = useState("");
 
-  // Ref for auto scroll
   const messagesEndRef = useRef(null);
 
-  // Auto scroll when new message comes
   useEffect(() => {
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
   }, [messages]);
@@ -106,53 +104,38 @@ const Chat = () => {
               <div className="flex items-center gap-2">
                 <p className="text-xs font-medium">08:24 PM</p>
                 {msg.isOwn && (
-                  <CheckCheck
-                    size={15}
-                    className="text-[var(--accent-blue)] "
-                  />
+                  <CheckCheck size={15} className="text-[var(--accent-blue)]" />
                 )}
               </div>
             </div>
           </div>
         ))}
-
-        {/* Auto scroll anchor */}
         <div ref={messagesEndRef} />
       </div>
 
-      {/* BOTTOM INPUT BAR */}
+      {/* BOTTOM INPUT */}
       <div className="shrink-0 border-t border-[var(--border-light)] bg-[var(--bg-main)] px-4 py-3">
         <div className="flex items-center gap-3 bg-[var(--bg-secondary)] rounded-3xl px-4 py-[10px]">
-          <button className="text-[var(--text-secondary)] hover:text-[var(--accent-primary)]">
-            <Smile size={18} />
-          </button>
-
-          <button className="text-[var(--text-secondary)] hover:text-[var(--accent-primary)]">
-            <Paperclip size={18} />
-          </button>
+          <Smile size={18} className="text-[var(--text-secondary)]" />
+          <Paperclip size={18} className="text-[var(--text-secondary)]" />
 
           <input
             type="text"
             value={inputValue}
             onChange={(e) => setInputValue(e.target.value)}
-            onKeyDown={(e) => {
-              if (e.key === "Enter") sendMessage();
-            }}
+            onKeyDown={(e) => e.key === "Enter" && sendMessage()}
             placeholder="Type a message..."
-            className="flex-1 bg-transparent outline-none text-[15px] text-[var(--text-main)] placeholder-[var(--text-muted)]"
+            className="flex-1 bg-transparent outline-none text-[15px]"
           />
 
           {inputValue.trim() ? (
-            <button
+            <Send
+              size={18}
               onClick={sendMessage}
-              className="text-[var(--accent-primary)] hover:scale-110 transition-transform"
-            >
-              <Send size={18} fill="currentColor" />
-            </button>
+              className="cursor-pointer text-[var(--accent-primary)]"
+            />
           ) : (
-            <button className="text-[var(--text-secondary)] hover:text-[var(--accent-primary)]">
-              <Mic size={18} />
-            </button>
+            <Mic size={18} className="text-[var(--text-secondary)]" />
           )}
         </div>
       </div>
