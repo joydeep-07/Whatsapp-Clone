@@ -6,15 +6,28 @@ import Settings from "../ui/Settings";
 import Status from "../ui/Status";
 import Chat from "../ui/Chat";
 import SelectChat from "./SelectChat";
+import AddContact from "../ui/AddContact";
 
 const Dashboard = () => {
-  const [activePanel, setActivePanel] = useState("chats");
+  const [activePanel, setActivePanel] = useState("chats"); 
   const [selectedUser, setSelectedUser] = useState(null);
+  const [rightView, setRightView] = useState("empty"); 
 
-  const renderPanel = () => {
+  const renderLeftPanel = () => {
     switch (activePanel) {
       case "chats":
-        return <Chatlist onSelectUser={setSelectedUser} />;
+        return (
+          <Chatlist
+            onSelectUser={(user) => {
+              setSelectedUser(user);
+              setRightView("chat");
+            }}
+            onAddContact={() => {
+              setSelectedUser(null);
+              setRightView("addContact");
+            }}
+          />
+        );
       case "status":
         return <Status />;
       case "settings":
@@ -22,27 +35,26 @@ const Dashboard = () => {
       case "profile":
         return <Profile />;
       default:
-        return <Chatlist onSelectUser={setSelectedUser} />;
+        return null;
     }
   };
-
 
   return (
     <div className="flex">
       <SidePanel setActivePanel={setActivePanel} />
 
-      <div className="left bg-[var(--bg-main)] h-screen w-1/4">
-        {renderPanel()}
+      {/* LEFT */}
+      <div className="w-1/4 h-screen bg-[var(--bg-main)]">
+        {renderLeftPanel()}
       </div>
 
-      <div className="right h-screen w-3/4 bg-[var(--bg-main)]">
-        {selectedUser ? (
-          <Chat user={selectedUser} />
-        ) : (
-         <>
-         <SelectChat/>
-         </>
-        )}
+      {/* RIGHT */}
+      <div className="w-3/4 h-screen bg-[var(--bg-main)]">
+        {rightView === "chat" && selectedUser && <Chat user={selectedUser} />}
+
+        {rightView === "addContact" && <AddContact />}
+
+        {rightView === "empty" && <SelectChat />}
       </div>
     </div>
   );

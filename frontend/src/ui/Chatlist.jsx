@@ -1,8 +1,14 @@
-import { CheckCheck, CirclePlus, EllipsisVertical, Search, User } from "lucide-react";
+import {
+  CheckCheck,
+  CirclePlus,
+  EllipsisVertical,
+  Search,
+  User,
+} from "lucide-react";
 import React from "react";
 import users from "../assets/users";
 
-const Chatlist = ({ onSelectUser }) => {
+const Chatlist = ({ onSelectUser, onAddContact }) => {
   return (
     <div className="h-screen flex flex-col bg-[var(--bg-main)] text-[var(--text-main)]">
       {/* Fixed header section */}
@@ -10,8 +16,13 @@ const Chatlist = ({ onSelectUser }) => {
         {/* Title + actions */}
         <div className="flex items-center justify-between">
           <h1 className="font-body text-xl tracking-wider">Chats</h1>
+
           <div className="flex items-center gap-5 text-[var(--text-secondary)]">
-            <CirclePlus className="w-6 h-6 cursor-pointer hover:text-[var(--accent-primary)] transition-colors" />
+            {/* ➕ Add Contact */}
+            <button onClick={onAddContact}>
+              <CirclePlus className="w-6 h-6 cursor-pointer hover:text-[var(--accent-primary)] transition-colors" />
+            </button>
+
             <EllipsisVertical className="w-6 h-6 cursor-pointer hover:text-[var(--accent-primary)] transition-colors" />
           </div>
         </div>
@@ -40,54 +51,50 @@ const Chatlist = ({ onSelectUser }) => {
         </div>
       </div>
 
-      {/* Scrollable users list */}
+      {/* Users list */}
       <div className="flex-1 overflow-y-auto px-3 py-2 scrollbar-thin scrollbar-thumb-[var(--scroll-thumb)] scrollbar-track-transparent">
-        <div className="flex flex-col gap-1">
-          {users.map((user) => (
-            <div
-              onClick={() => onSelectUser(user)}
-              key={user.id}
-              className="flex items-center gap-3 py-3 px-3 -mx-3 hover:bg-[var(--bg-tertiary)]/30 cursor-pointer transition-colors duration-[var(--transition-fast)]"
-            >
-              {/* Avatar */}
-              <div className="flex-shrink-0 relative">
-                {user.profile === "" ? (
-                  <div className="h-12 w-12 bg-[var(--bg-secondary)] rounded-full flex justify-center items-center border border-[var(--border-light)]">
-                    <User className="text-[var(--text-secondary)]/70" />
-                  </div>
-                ) : (
-                  <img
-                    className="h-12 w-12 rounded-full object-cover border border-[var(--border-light)]"
-                    src={user.profile}
-                    alt={user.name}
-                  />
-                )}
-
-                {user.isOnline && (
-                  <span className="absolute bottom-0 right-0 h-3 w-3 bg-[var(--success)] rounded-full border-2 border-[var(--bg-main)]" />
-                )}
-              </div>
-
-              {/* Name + message */}
-              <div className="min-w-0 flex-1">
-                <h2 className="font-semibold truncate">{user.name}</h2>
-                <p className="text-sm text-[var(--text-secondary)] flex items-center gap-1.5 truncate">
-                  <CheckCheck size={16} className="text-[var(--accent-blue)]" />
-                  {user.message}
-                </p>
-              </div>
-
-              {/* ✅ EXTREME RIGHT unread badge */}
-              {user.isUnread && (
-                <div className="ml-auto flex items-center">
-                  <span className="min-w-[20px] h-[20px] flex items-center justify-center text-[11px] font-bold bg-[var(--success)] text-[var(--bg-main)] rounded-full">
-                    2
-                  </span>
+        {users.map((user) => (
+          <div
+            key={user.id}
+            onClick={() => onSelectUser(user)}
+            className="flex items-center gap-3 py-3 px-3 -mx-3 hover:bg-[var(--bg-tertiary)]/30 cursor-pointer transition-colors"
+          >
+            {/* Avatar */}
+            <div className="relative">
+              {user.profile ? (
+                <img
+                  src={user.profile}
+                  alt={user.name}
+                  className="h-12 w-12 rounded-full object-cover border border-[var(--border-light)]"
+                />
+              ) : (
+                <div className="h-12 w-12 bg-[var(--bg-secondary)] rounded-full flex items-center justify-center border border-[var(--border-light)]">
+                  <User />
                 </div>
               )}
+
+              {user.isOnline && (
+                <span className="absolute bottom-0 right-0 h-3 w-3 bg-[var(--success)] rounded-full border-2 border-[var(--bg-main)]" />
+              )}
             </div>
-          ))}
-        </div>
+
+            {/* Name + message */}
+            <div className="flex-1 min-w-0">
+              <h2 className="font-semibold truncate">{user.name}</h2>
+              <p className="text-sm text-[var(--text-secondary)] truncate flex items-center gap-1">
+                <CheckCheck size={16} />
+                {user.message}
+              </p>
+            </div>
+
+            {/* Unread badge */}
+            {user.isUnread && (
+              <span className="ml-auto min-w-[20px] h-[20px] flex items-center justify-center text-[11px] font-bold bg-[var(--success)] text-[var(--bg-main)] rounded-full">
+                2
+              </span>
+            )}
+          </div>
+        ))}
       </div>
     </div>
   );
