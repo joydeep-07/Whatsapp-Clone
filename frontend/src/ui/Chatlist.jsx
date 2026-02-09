@@ -57,7 +57,7 @@ const Chatlist = ({ onSelectUser, onAddContact }) => {
           <div
             key={user.id}
             onClick={() => onSelectUser(user)}
-            className="flex items-center gap-3 py-3 px-3 -mx-3 hover:bg-[var(--bg-tertiary)]/30 cursor-pointer transition-colors"
+            className="flex items-center gap-4 py-3 px-3 -mx-3 hover:bg-[var(--bg-tertiary)]/30 cursor-pointer transition-colors"
           >
             {/* Avatar */}
             <div className="relative">

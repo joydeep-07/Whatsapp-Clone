@@ -7,6 +7,7 @@ import {
   Mic,
   Send,
   CheckCheck,
+  User,
 } from "lucide-react";
 import React, { useState, useRef, useEffect } from "react";
 
@@ -64,11 +65,17 @@ const Chat = ({ user }) => {
         <div className="flex items-center justify-between">
           {/* LEFT */}
           <div className="flex items-center gap-3">
-            <img
-              src={user.profile}
-              alt={user.name}
-              className="h-10 w-10 rounded-full object-cover border border-[var(--border-light)]"
-            />
+            {user.profile ? (
+              <img
+                src={user.profile}
+                alt={user.name}
+                className="h-12 w-12 rounded-full object-cover border border-[var(--border-light)]"
+              />
+            ) : (
+              <div className="h-12 w-12 bg-[var(--bg-secondary)] rounded-full flex items-center justify-center border border-[var(--border-light)]">
+                <User />
+              </div>
+            )}
             <div className="leading-tight">
               <h1 className="text-sm font-medium">{user.name}</h1>
               <p className="text-xs text-[var(--text-muted)] font-medium">
