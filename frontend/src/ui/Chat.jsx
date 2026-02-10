@@ -91,7 +91,6 @@ const Chat = ({ user }) => {
               <Phone className="cursor-pointer" />
               <MoreVertical
                 className="cursor-pointer"
-                onClick={() => setIsContactOpen(true)}
               />
             </div>
           </div>
