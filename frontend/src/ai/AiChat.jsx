@@ -1,15 +1,13 @@
 import {
-  Phone,
-  Video,
   MoreVertical,
   Smile,
   Paperclip,
   Mic,
-  Send,
   CheckCheck,
 } from "lucide-react";
 import React, { useState, useRef, useEffect } from "react";
 import AiLogo from "./AiLogo";
+import { IoSend } from "react-icons/io5";
 
 const AiChat = () => {
   const [messages, setMessages] = useState([
@@ -132,9 +130,9 @@ const AiChat = () => {
             />
 
             {inputValue.trim() ? (
-              <Send
+              <IoSend
                 onClick={sendMessage}
-                className="cursor-pointer text-[var(--accent-primary)]"
+                className="cursor-pointer text-xl text-[var(--text-secondary)]/70 "
               />
             ) : (
               <Mic />
