@@ -89,9 +89,7 @@ const Chat = ({ user }) => {
             <div className="flex items-center gap-6 text-[var(--text-secondary)]">
               <Video className="cursor-pointer" />
               <Phone className="cursor-pointer" />
-              <MoreVertical
-                className="cursor-pointer"
-              />
+              <MoreVertical className="cursor-pointer" />
             </div>
           </div>
         </div>
@@ -125,7 +123,7 @@ const Chat = ({ user }) => {
 
         {/* INPUT */}
         <div className="shrink-0 border-t border-[var(--border-light)] bg-[var(--bg-main)] px-4 py-3">
-          <div className="flex items-center gap-3 bg-[var(--bg-secondary)] rounded-3xl px-4 py-[10px]">
+          <div className="flex items-center gap-3 border border-[var(--border-light)] rounded-3xl px-4 py-[10px]">
             <Smile size={18} />
             <Paperclip size={18} />
 
