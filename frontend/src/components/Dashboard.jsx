@@ -7,11 +7,12 @@ import Status from "../ui/Status";
 import Chat from "../ui/Chat";
 import SelectChat from "./SelectChat";
 import AddContact from "../ui/AddContact";
+import AiChat from "../ai/AiChat";
 
 const Dashboard = () => {
-  const [activePanel, setActivePanel] = useState("chats"); 
+  const [activePanel, setActivePanel] = useState("chats");
   const [selectedUser, setSelectedUser] = useState(null);
-  const [rightView, setRightView] = useState("empty"); 
+  const [rightView, setRightView] = useState("empty");
 
   const renderLeftPanel = () => {
     switch (activePanel) {
@@ -25,6 +26,10 @@ const Dashboard = () => {
             onAddContact={() => {
               setSelectedUser(null);
               setRightView("addContact");
+            }}
+            onOpenAiChat={() => {
+              setSelectedUser(null);
+              setRightView("ai");
             }}
           />
         );
@@ -53,6 +58,8 @@ const Dashboard = () => {
         {rightView === "chat" && selectedUser && <Chat user={selectedUser} />}
 
         {rightView === "addContact" && <AddContact />}
+
+        {rightView === "ai" && <AiChat />}
 
         {rightView === "empty" && <SelectChat />}
       </div>

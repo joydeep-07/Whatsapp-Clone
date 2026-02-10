@@ -10,7 +10,7 @@ import users from "../assets/users";
 import MyContacts from "./MyContacts";
 import AiLogo from "../ai/AiLogo";
 
-const Chatlist = ({ onSelectUser, onAddContact }) => {
+const Chatlist = ({ onSelectUser, onAddContact, onOpenAiChat }) => {
   return (
     <div className="h-screen relative flex flex-col bg-[var(--bg-main)] text-[var(--text-main)]">
       {/* Fixed header section */}
@@ -109,7 +109,9 @@ const Chatlist = ({ onSelectUser, onAddContact }) => {
         ))}
       </div>
       <div className="absolute bottom-6 right-6 flex flex-col gap-4">
-        <AiLogo/>
+        <div onClick={onOpenAiChat} className="cursor-pointer">
+          <AiLogo />
+        </div>
         <MyContacts />
       </div>
     </div>
