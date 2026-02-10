@@ -51,9 +51,11 @@ const Chat = ({ user }) => {
     <div className="h-screen flex bg-[var(--bg-main)] text-[var(--text-main)] overflow-hidden">
       {/* CHAT AREA */}
       <div
-        className={`flex flex-col transition-all duration-300 ease-in-out ${
-          isContactOpen ? "flex-2" : "flex-1"
-        }`}
+        className={`
+      flex flex-col
+      transition-[width] duration-300 ease-in-out
+      ${isContactOpen ? "w-[70%] " : "w-full"}
+    `}
       >
         {/* TOP BAR */}
         <div className="shrink-0 bg-[var(--bg-secondary)]/30 px-4 py-3 border-b border-[var(--border-light)]/60">
