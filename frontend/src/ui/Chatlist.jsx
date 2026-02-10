@@ -8,6 +8,7 @@ import {
 import React from "react";
 import users from "../assets/users";
 import MyContacts from "./MyContacts";
+import AiLogo from "../ai/AiLogo";
 
 const Chatlist = ({ onSelectUser, onAddContact }) => {
   return (
@@ -107,7 +108,8 @@ const Chatlist = ({ onSelectUser, onAddContact }) => {
           </div>
         ))}
       </div>
-      <div className="absolute bottom-6 right-6">
+      <div className="absolute bottom-6 right-6 flex flex-col gap-4">
+        <AiLogo/>
         <MyContacts />
       </div>
     </div>
