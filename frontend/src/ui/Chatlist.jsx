@@ -7,10 +7,11 @@ import {
 } from "lucide-react";
 import React from "react";
 import users from "../assets/users";
+import MyContacts from "./MyContacts";
 
 const Chatlist = ({ onSelectUser, onAddContact }) => {
   return (
-    <div className="h-screen flex flex-col bg-[var(--bg-main)] text-[var(--text-main)]">
+    <div className="h-screen relative flex flex-col bg-[var(--bg-main)] text-[var(--text-main)]">
       {/* Fixed header section */}
       <div className="shrink-0 px-4 pt-5 pb-4 space-y-4 border-b border-[var(--border-light)]">
         {/* Title + actions */}
@@ -105,6 +106,9 @@ const Chatlist = ({ onSelectUser, onAddContact }) => {
             )}
           </div>
         ))}
+      </div>
+      <div className="absolute bottom-6 right-6">
+        <MyContacts />
       </div>
     </div>
   );
