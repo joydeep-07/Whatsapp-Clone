@@ -104,7 +104,7 @@ const Chat = ({ user }) => {
               className={`flex ${msg.isOwn ? "justify-end" : "justify-start"}`}
             >
               <div
-                className={`max-w-[70%] px-4 py-2.5 rounded-2xl text-sm shadow-sm ${
+                className={`max-w-[70%] px-4 py-2.5 rounded-2xl text-sm text-white shadow-sm ${
                   msg.isOwn
                     ? "bg-[#d9fdd3] dark:bg-[#005c4b] rounded-br-none"
                     : "bg-white dark:bg-[#202c33] rounded-bl-none"
