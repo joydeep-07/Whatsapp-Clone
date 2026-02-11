@@ -10,15 +10,19 @@ import users from "../assets/users";
 import MyContacts from "./MyContacts";
 import AiLogo from "../ai/AiLogo";
 
-const Chatlist = ({ onSelectUser, onAddContact, onOpenAiChat }) => {
+const Chatlist = ({
+  onSelectUser,
+  onAddContact,
+  onOpenAiChat,
+  onContactClick,
+}) => {
+  const [selectedUserId, setSelectedUserId] = useState(null);
 
- const [selectedUserId, setSelectedUserId] = useState(null);
+  const handleSelectUser = (user) => {
+    setSelectedUserId(user.id);
+    onSelectUser(user);
+  };
 
- const handleSelectUser = (user) => {
-   setSelectedUserId(user.id);
-   onSelectUser(user);
- };
-  
   return (
     <div className="h-screen relative flex flex-col bg-[var(--bg-main)] text-[var(--text-main)]">
       {/* Fixed header section */}
@@ -126,11 +130,13 @@ const Chatlist = ({ onSelectUser, onAddContact, onOpenAiChat }) => {
           );
         })}
       </div>
-      <div className="absolute bottom-20 right-6 flex flex-col items-center justify-center gap-4">
+      <div className="absolute bottom-10 right-6 flex flex-col items-center justify-center gap-4">
         <div onClick={onOpenAiChat} className="cursor-pointer">
           <AiLogo />
         </div>
-        {/* <MyContacts /> */}
+        <div onClick={onContactClick}>
+          <MyContacts />
+        </div>
       </div>
     </div>
   );

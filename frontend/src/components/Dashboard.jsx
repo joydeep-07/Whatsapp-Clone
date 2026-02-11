@@ -8,6 +8,7 @@ import Chat from "../ui/Chat";
 import SelectChat from "./SelectChat";
 import AddContact from "../ui/AddContact";
 import AiChat from "../ai/AiChat";
+import AllContacts from "../ui/AllContacts";
 
 const Dashboard = () => {
   const [activePanel, setActivePanel] = useState("chats");
@@ -31,6 +32,7 @@ const Dashboard = () => {
               setSelectedUser(null);
               setRightView("ai");
             }}
+            onContactClick={() => setActivePanel("contacts")} // ← handle contact click
           />
         );
       case "status":
@@ -39,10 +41,13 @@ const Dashboard = () => {
         return <Settings />;
       case "profile":
         return <Profile />;
+      case "contacts":
+        return <AllContacts />;
       default:
         return null;
     }
   };
+
 
   return (
     <div className="flex">
