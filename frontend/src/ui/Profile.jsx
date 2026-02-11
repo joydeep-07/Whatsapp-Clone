@@ -55,7 +55,7 @@ const Profile = () => {
     <div className="h-full relative w-full bg-[var(--bg-main)] text-[var(--text-main)] p-6">
       <div className="flex justify-between items-center mb-6">
         {" "}
-        <h2 className="text-lg font-medium">Profile</h2>
+        <h2 className="text-xl font-medium font-heading">Profile</h2>
         {/* Save Button (only show if editing) */}
         {(editName || editAbout || imageChanged) && (
           <button
