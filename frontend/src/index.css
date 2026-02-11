@@ -29,7 +29,7 @@
   /* Status Colors - Harmonized with accent */
   --success: rgb(26, 124, 26);
   --warning: #b45309;
-  --error: #b91c1c;
+  --error: #bb2b2b;
 
   /* Shadows */
   --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.1);
@@ -72,7 +72,7 @@
   /* Status Colors */
   --success: #66bb6a;
   --warning: #d97706;
-  --error: #ef4444;
+  --error: #ec5151;
 
   /* Shadows */
   --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.8);
