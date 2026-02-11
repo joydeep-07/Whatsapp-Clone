@@ -1,20 +1,17 @@
-import { Pencil, Phone, Mail, LogOut } from "lucide-react";
+import { Pencil, Phone, Mail, User } from "lucide-react";
+import { useSelector } from "react-redux";
 import Logout from "../components/Logout";
 
 const Profile = () => {
-  const user = {
-    name: "Joydeep Paul",
-    profile:
-      "https://i.pinimg.com/736x/da/59/64/da59647bd31dd524c09991cb89949804.jpg",
-    email: "joydeep@gmail.com",
-    phone: "+91 9064547381",
-    about: "Mern Stack developer",
-  };
+  const { user } = useSelector((state) => state.auth);
 
-  const handleLogout = () => {
-    // later you can clear token / context here
-    console.log("Logged out");
-  };
+  if (!user) {
+    return (
+      <div className="h-full flex items-center justify-center text-[var(--text-muted)]">
+        No user data found
+      </div>
+    );
+  }
 
   return (
     <div className="h-full relative w-full bg-[var(--bg-main)] text-[var(--text-main)] p-6">
@@ -23,11 +20,17 @@ const Profile = () => {
 
       {/* Profile Image */}
       <div className="flex justify-center mb-8">
-        <img
-          src={user.profile}
-          alt="profile"
-          className="w-36 h-36 rounded-full object-cover shadow-[var(--shadow-md)]"
-        />
+        {!user.profile ? (
+          <div className="rounded-full w-36 h-36 flex bg-[var(--bg-secondary)] justify-center items-center">
+            <User size={80}  className="text-[var(--text-secondary)]/70 " />
+          </div>
+        ) : (
+          <img
+            src={user.profile}
+            alt="profile"
+            className="w-36 h-36 rounded-full object-cover shadow-[var(--shadow-md)]"
+          />
+        )}
       </div>
 
       {/* Name */}
@@ -46,7 +49,9 @@ const Profile = () => {
       <div className="mb-6">
         <p className="text-sm text-[var(--text-muted)] mb-1">About</p>
         <div className="flex items-center justify-between border-b border-[var(--border-light)] pb-2">
-          <p className="text-base">{user.about}</p>
+          <p className="text-base">
+            {user.about || "Hey there! I am using WhatsApp."}
+          </p>
           <Pencil
             size={16}
             className="text-[var(--accent-primary)] cursor-pointer"
@@ -59,7 +64,7 @@ const Profile = () => {
         <p className="text-sm text-[var(--text-muted)] mb-1">Phone</p>
         <div className="flex items-center gap-3 border-b border-[var(--border-light)] pb-2">
           <Phone size={16} className="text-[var(--accent-primary)]" />
-          <p className="text-base">{user.phone}</p>
+          <p className="text-base">{user.phone || "Not added"}</p>
         </div>
       </div>
 
@@ -74,7 +79,7 @@ const Profile = () => {
 
       {/* Logout */}
       <div className="absolute bottom-6 left-0 w-full px-6">
-       <Logout/>
+        <Logout />
       </div>
     </div>
   );
