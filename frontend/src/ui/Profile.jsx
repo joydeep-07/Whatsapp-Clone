@@ -1,6 +1,8 @@
 import { Pencil, Mail, User, Camera } from "lucide-react";
 import { useSelector, useDispatch } from "react-redux";
 import { useState } from "react";
+import axios from "axios";
+import { ENDPOINTS } from "../api/endPoint";
 import Logout from "../components/Logout";
 // import { updateUser } from "../redux/authSlice"; // if you have update action
 
@@ -14,7 +16,8 @@ const Profile = () => {
 
   const [name, setName] = useState(user?.name || "");
   const [about, setAbout] = useState(user?.about || "");
-  const [profileImage, setProfileImage] = useState(user?.profile || "");
+  const [profileImage, setProfileImage] = useState(user?.profilePic || "");
+  const [selectedFile, setSelectedFile] = useState(null);
 
   if (!user) {
     return (
@@ -24,39 +27,73 @@ const Profile = () => {
     );
   }
 
-  // Handle Image Upload
+  // ✅ Handle Image Upload (Preview only)
   const handleImageChange = (e) => {
     const file = e.target.files[0];
     if (file) {
       const imageUrl = URL.createObjectURL(file);
       setProfileImage(imageUrl);
-      setImageChanged(true); 
+      setSelectedFile(file);
+      setImageChanged(true);
     }
   };
 
-  // Save Handler
-  const handleSave = () => {
-    const updatedUser = {
-      ...user,
-      name,
-      about,
-      profile: profileImage,
-    };
+  // ✅ Save Handler (API Connected)
+  const handleSave = async () => {
+    try {
+      const token = localStorage.getItem("token");
 
-    console.log("Updated User:", updatedUser);
+      // 1️⃣ Update name & about
+      const profileRes = await axios.put(
+        ENDPOINTS.UPDATE_PROFILE,
+        { name, about },
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        },
+      );
 
-    setEditName(false);
-    setEditAbout(false);
-    setImageChanged(false); 
+      let updatedUser = profileRes.data.user;
+
+      // 2️⃣ Upload image if changed
+      if (imageChanged && selectedFile) {
+        const formData = new FormData();
+        formData.append("profile", selectedFile);
+
+        const imageRes = await axios.put(
+          ENDPOINTS.UPLOAD_PROFILE_IMAGE,
+          formData,
+          {
+            headers: {
+              Authorization: `Bearer ${token}`,
+              "Content-Type": "multipart/form-data",
+            },
+          },
+        );
+
+        updatedUser.profilePic = imageRes.data.profilePic;
+      }
+
+      // 3️⃣ Update Redux (if you have updateUser action)
+      // dispatch(updateUser(updatedUser));
+
+      console.log("Updated User:", updatedUser);
+
+      setEditName(false);
+      setEditAbout(false);
+      setImageChanged(false);
+      setSelectedFile(null);
+    } catch (error) {
+      console.error("Profile update failed:", error);
+    }
   };
-
 
   return (
     <div className="h-full relative w-full bg-[var(--bg-main)] text-[var(--text-main)] p-6">
       <div className="flex justify-between items-center mb-6">
-        {" "}
         <h2 className="text-xl font-medium font-heading">Profile</h2>
-        {/* Save Button (only show if editing) */}
+
         {(editName || editAbout || imageChanged) && (
           <button
             onClick={handleSave}
@@ -66,6 +103,7 @@ const Profile = () => {
           </button>
         )}
       </div>
+
       {/* Profile Image */}
       <div className="flex flex-col items-center mb-8 relative">
         <div className=" relative">
@@ -75,13 +113,16 @@ const Profile = () => {
             </div>
           ) : (
             <img
-              src={profileImage}
+              src={
+                profileImage.startsWith("blob:")
+                  ? profileImage
+                  : `http://localhost:3000${profileImage}`
+              }
               alt="profile"
               className="w-36 h-36 rounded-full object-cover shadow-[var(--shadow-md)]"
             />
           )}
 
-          {/* Upload Button */}
           <label className="absolute bottom-1 right-2 bg-[var(--accent-primary)] p-2 rounded-full cursor-pointer">
             <Camera size={16} className="text-white" />
             <input

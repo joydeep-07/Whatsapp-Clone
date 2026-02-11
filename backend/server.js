@@ -32,6 +32,8 @@ app.get("/", (req, res) => {
 });
 
 app.use("/api/auth", authRoutes);
+app.use("/uploads", express.static("uploads"));
+app.use("/api/profile", require("./routes/profile.routes"));
 
 /* Start Server */
 app.listen(PORT, () => {
