@@ -1,4 +1,3 @@
-// Chat.jsx
 import {
   Phone,
   Video,
@@ -28,12 +27,20 @@ const Chat = ({ user }) => {
   const messagesEndRef = useRef(null);
   const chatAreaRef = useRef(null);
 
+  // Skip animation on first render
+  const firstRender = useRef(true);
+
   useEffect(() => {
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
   }, [messages]);
 
-  // Animate chat width when contact panel opens/closes
+  // Animate chat width when ContactInfo opens/closes, skip first render
   useEffect(() => {
+    if (firstRender.current) {
+      firstRender.current = false;
+      return; // Do nothing on first render
+    }
+
     if (chatAreaRef.current) {
       gsap.to(chatAreaRef.current, {
         width: isContactOpen ? "70%" : "100%",
@@ -65,7 +72,7 @@ const Chat = ({ user }) => {
       {/* CHAT AREA */}
       <div
         ref={chatAreaRef}
-        className="flex flex-col bg-[var(--bg-secondary)]/50"
+        className={`flex flex-col bg-[var(--bg-secondary)]/50 w-full`}
       >
         {/* TOP BAR */}
         <div className="shrink-0 bg-[var(--bg-main)] px-4 py-3 border-b border-[var(--border-light)]/60">
