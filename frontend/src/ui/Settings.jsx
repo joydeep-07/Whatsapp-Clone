@@ -66,21 +66,14 @@ const Settings = () => {
         <h2 className="text-xl font-medium font-heading mb-6">Settings</h2>
 
         {/* Search */}
-        <div className="relative mb-6">
-          <Search
-            size={18}
-            className="absolute left-4 top-1/2 -translate-y-1/2 text-[var(--text-muted)]"
-          />
-          <input
-            type="text"
-            placeholder="Search settings"
-            className="w-full pl-10 pr-4 py-3 rounded-full 
-                       bg-[var(--bg-tertiary)] 
-                       text-[var(--text-main)] 
-                       placeholder:text-[var(--text-muted)]
-                       focus:outline-none"
-          />
-        </div>
+               <div className="flex mb-5 items-center border border-[var(--border-light)] pl-4 gap-3 h-10 rounded-full bg-[var(--bg-tertiary)]/40 overflow-hidden">
+                 <Search className="text-[var(--text-muted)]" size={18} />
+                 <input
+                   type="text"
+                   placeholder="Search"
+                   className="flex-1 h-full bg-transparent outline-none text-[var(--text-secondary)] placeholder-[var(--text-muted)] text-sm"
+                 />
+               </div>
 
         {/* Profile Section */}
         {/* Profile Section */}
