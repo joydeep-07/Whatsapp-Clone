@@ -58,15 +58,7 @@ const Profile = () => {
           />
         </div>
       </div>
-
-      {/* Phone */}
-      <div className="mb-6">
-        <p className="text-sm text-[var(--text-muted)] mb-1">Phone</p>
-        <div className="flex items-center gap-3 border-b border-[var(--border-light)] pb-2">
-          <Phone size={16} className="text-[var(--accent-primary)]" />
-          <p className="text-base">{user.phone || "Not added"}</p>
-        </div>
-      </div>
+    
 
       {/* Email */}
       <div>
