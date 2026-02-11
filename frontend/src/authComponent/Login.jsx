@@ -3,8 +3,12 @@ import { useForm } from "react-hook-form";
 import { FaRegEye, FaRegEyeSlash } from "react-icons/fa";
 import { FcGoogle } from "react-icons/fc";
 import { IoLockClosedOutline, IoMailOutline } from "react-icons/io5";
+import axios from "axios";
+// import { useNavigate } from "react-router-dom";
 
 const Login = ({ onRegister }) => {
+  // const navigate = useNavigate();
+
   const [showPassword, setShowPassword] = useState(false);
 
   const {
@@ -21,10 +25,28 @@ const Login = ({ onRegister }) => {
     },
   });
 
-  const onSubmit = (data) => {
-    console.log("Login Data 👉", data);
-    reset();
-  };
+   const onSubmit = async (data) => {
+     try {
+       const res = await axios.post("http://localhost:3000/api/auth/login", {
+         email: data.email,
+         password: data.password,
+       });
+
+       console.log("Login Success ✅", res.data);
+
+       // Store token
+       localStorage.setItem("token", res.data.token);
+       localStorage.setItem("user", JSON.stringify(res.data.user));
+
+       // Redirect to chat
+      //  navigate("/chat"); 
+
+       reset();
+     } catch (error) {
+       console.log(error.response?.data || error.message);
+       alert(error.response?.data?.message || "Login failed");
+     }
+   };
 
   return (
     <div className="w-full flex items-center justify-center">

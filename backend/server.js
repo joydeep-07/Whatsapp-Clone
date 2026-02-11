@@ -1,20 +1,39 @@
+require("dotenv").config();
+
 const express = require("express");
+const dotenv = require("dotenv");
+const cors = require("cors");
 const connectDB = require("./db");
+const authRoutes = require("./routes/auth.routes");
+
+dotenv.config();
 
 const app = express();
-const PORT = 3000;
+const PORT = process.env.PORT || 3000;
 
-// Connect Database
+// Connect DB
 connectDB();
 
+/* CORS */
+app.use(
+  cors({
+    origin: "http://localhost:5173",
+    credentials: true,
+  }),
+);
+
+/* Body Parser */
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
+
+/* Routes */
 app.get("/", (req, res) => {
-  res.send("Hello World");
+  res.send("API is running...");
 });
 
-app.listen(PORT, (err) => {
-  if (err) {
-    console.log(err);
-  } else {
-    console.log("SERVER STARTED ON PORT " + PORT);
-  }
+app.use("/api/auth", authRoutes);
+
+/* Start Server */
+app.listen(PORT, () => {
+  console.log("SERVER STARTED ON PORT " + PORT);
 });
