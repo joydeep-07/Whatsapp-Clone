@@ -10,6 +10,7 @@ const Profile = () => {
 
   const [editName, setEditName] = useState(false);
   const [editAbout, setEditAbout] = useState(false);
+  const [imageChanged, setImageChanged] = useState(false);
 
   const [name, setName] = useState(user?.name || "");
   const [about, setAbout] = useState(user?.about || "");
@@ -29,6 +30,7 @@ const Profile = () => {
     if (file) {
       const imageUrl = URL.createObjectURL(file);
       setProfileImage(imageUrl);
+      setImageChanged(true); 
     }
   };
 
@@ -41,12 +43,13 @@ const Profile = () => {
       profile: profileImage,
     };
 
-    // dispatch(updateUser(updatedUser));  // Use this if redux action exists
     console.log("Updated User:", updatedUser);
 
     setEditName(false);
     setEditAbout(false);
+    setImageChanged(false); 
   };
+
 
   return (
     <div className="h-full relative w-full bg-[var(--bg-main)] text-[var(--text-main)] p-6">
@@ -54,7 +57,7 @@ const Profile = () => {
         {" "}
         <h2 className="text-lg font-medium">Profile</h2>
         {/* Save Button (only show if editing) */}
-        {(editName || editAbout) && (
+        {(editName || editAbout || imageChanged) && (
           <button
             onClick={handleSave}
             className="text-md font-medium text-[var(--accent-primary)] "
