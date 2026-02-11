@@ -26,7 +26,7 @@ const AddContact = () => {
   };
 
   return (
-    <div className="w-full flex items-center justify-center min-h-screen bg-[var(--bg-main)] font-body px-4">
+    <div className="w-full flex items-center justify-center min-h-screen bg-[var(--bg-main)] px-4">
       <form
         onSubmit={handleSubmit(onSubmit)}
         className={`

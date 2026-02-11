@@ -11,21 +11,21 @@ const SidePanel = ({ setActivePanel }) => {
           <MessageSquare />
         </button>
 
-        <button onClick={() => setActivePanel("status")}>
+        {/* <button onClick={() => setActivePanel("status")}>
           <CircleDashed />
-        </button>
+        </button> */}
       </div>
 
       {/* BOTTOM */}
       <div className="flex flex-col items-center gap-5">
         <ThemeToggle />
 
-        <button onClick={() => setActivePanel("settings")}>
-          <Settings />
-        </button>
-
         <button onClick={() => setActivePanel("profile")}>
           <User />
+        </button>
+
+        <button onClick={() => setActivePanel("settings")}>
+          <Settings />
         </button>
       </div>
     </div>
