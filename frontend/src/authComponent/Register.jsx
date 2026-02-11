@@ -39,7 +39,7 @@ const Register = ({ onLogin }) => {
       setServerError("");
       setSuccessMsg("");
 
-      const res = await fetch(`${BASE_URL}${ENDPOINTS.REGISTER}`, {
+      const res = await fetch(ENDPOINTS.REGISTER, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

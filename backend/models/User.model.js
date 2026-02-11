@@ -12,10 +12,6 @@ const userSchema = new mongoose.Schema(
       unique: true,
       required: true,
     },
-    phone: {
-      type: String,
-      unique: true,
-    },
     password: {
       type: String,
       required: true,
@@ -26,7 +22,7 @@ const userSchema = new mongoose.Schema(
     },
     about: {
       type: String,
-      default: "Hey there! I am using ChatApp.",
+      default: "Hey there! I am using WhatsApp.",
     },
     lastSeen: {
       type: Date,

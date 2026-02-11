@@ -7,6 +7,7 @@ import axios from "axios";
 import { useDispatch } from "react-redux";
 import { loginSuccess } from "../redux/slices/authSlice";
 // import { useNavigate } from "react-router-dom";
+import { BASE_URL, ENDPOINTS } from "../api/endPoint";
 
 const Login = ({ onRegister }) => {
   // const navigate = useNavigate();
@@ -29,7 +30,7 @@ const Login = ({ onRegister }) => {
 
   const onSubmit = async (data) => {
     try {
-      const res = await axios.post("http://localhost:3000/api/auth/login", {
+      const res = await axios.post(ENDPOINTS.LOGIN, {
         email: data.email,
         password: data.password,
       });
