@@ -10,6 +10,7 @@ import {
   Keyboard,
   HelpCircle,
   LogOut,
+  User,
 } from "lucide-react";
 import Logout from "../components/Logout";
 import { useSelector, useDispatch } from "react-redux";
@@ -84,18 +85,25 @@ const Settings = () => {
         {/* Profile Section */}
         {/* Profile Section */}
         <div className="flex items-center gap-4 mb-6">
-          <img
-            src={
-              user?.profilePic
-                ? user.profilePic.startsWith("http") ||
-                  user.profilePic.startsWith("blob:")
-                  ? user.profilePic
-                  : `http://localhost:3000${user.profilePic}`
-                : "https://via.placeholder.com/150" 
-            }
-            alt="profile"
-            className="w-14 h-14 rounded-full object-cover"
-          />
+          {!user.profilePic ? (
+            <div className="h-14 w-14 bg-[var(--bg-secondary)] rounded-full flex items-center justify-center border border-[var(--border-light)]">
+              <User />
+            </div>
+          ) : (
+            <img
+              src={
+                user?.profilePic
+                  ? user.profilePic.startsWith("http") ||
+                    user.profilePic.startsWith("blob:")
+                    ? user.profilePic
+                    : `http://localhost:3000${user.profilePic}`
+                  : "https://via.placeholder.com/150"
+              }
+              alt="profile"
+              className="w-14 h-14 rounded-full object-cover"
+            />
+          )}
+
           <div>
             <p className="font-medium">{user.name}</p>
             <p className="text-sm text-[var(--text-muted)]">
