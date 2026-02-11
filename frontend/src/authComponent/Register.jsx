@@ -43,7 +43,7 @@ const Register = ({ onLogin }) => {
           bg-[var(--bg-main)]
           p-6 rounded-xl
           border border-[var(--border-light)]/50
-          shadow-[var(--shadow-md)]
+     
         `}
         noValidate
       >

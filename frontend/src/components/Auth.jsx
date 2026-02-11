@@ -34,7 +34,7 @@ export default function Auth() {
   };
 
   return (
-    <div className=" pt-15 md:pt-0 pb-15 md:pb-0 md:min-h-screen flex items-center justify-center bg-[var(--bg-main)]">
+    <div className=" pt-15 flex-col md:pt-0 pb-15 md:pb-0 md:min-h-screen flex items-center justify-center bg-[var(--bg-main)]">
       <div className="flex w-full max-w-6xl overflow-hidden px-4">
         {/* LEFT PANEL (completely unchanged) */}
         <div className="w-1/2 h-[70vh] hidden md:flex relative flex-col justify-start">
@@ -141,6 +141,11 @@ export default function Auth() {
           </AnimatePresence>
         </div>
       </div>
+
+      <h1 className="max-w-xl text-center text-sm text-[var(--text-secondary)]/50 ">
+        A secure cloud workspace built for storing, sharing, and collaborating
+        on files effortlessly with complete control and modern performance.
+      </h1>
     </div>
   );
 }
