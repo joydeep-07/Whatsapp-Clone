@@ -3,8 +3,8 @@ import { useSelector, useDispatch } from "react-redux";
 import { useState } from "react";
 import axios from "axios";
 import { ENDPOINTS } from "../api/endPoint";
+import { updateUser } from "../redux/slices/authSlice";
 import Logout from "../components/Logout";
-// import { updateUser } from "../redux/authSlice"; // if you have update action
 
 const Profile = () => {
   const { user } = useSelector((state) => state.auth);
@@ -27,9 +27,10 @@ const Profile = () => {
     );
   }
 
-  // ✅ Handle Image Upload (Preview only)
+  // ✅ Handle Image Preview
   const handleImageChange = (e) => {
     const file = e.target.files[0];
+
     if (file) {
       const imageUrl = URL.createObjectURL(file);
       setProfileImage(imageUrl);
@@ -38,7 +39,7 @@ const Profile = () => {
     }
   };
 
-  // ✅ Save Handler (API Connected)
+  // ✅ Save Profile
   const handleSave = async () => {
     try {
       const token = localStorage.getItem("token");
@@ -72,32 +73,48 @@ const Profile = () => {
           },
         );
 
-        updatedUser.profilePic = imageRes.data.profilePic;
+        updatedUser = {
+          ...updatedUser,
+          profilePic: imageRes.data.profilePic,
+        };
       }
 
-      // 3️⃣ Update Redux (if you have updateUser action)
-      // dispatch(updateUser(updatedUser));
+      // ✅ Update Redux + localStorage
+      dispatch(updateUser(updatedUser));
 
-      console.log("Updated User:", updatedUser);
-
+      // Reset edit states
       setEditName(false);
       setEditAbout(false);
       setImageChanged(false);
       setSelectedFile(null);
+
+      console.log("Profile Updated Successfully");
     } catch (error) {
       console.error("Profile update failed:", error);
     }
   };
 
+  // ✅ Format Image URL Properly
+  const getImageSrc = () => {
+    if (!profileImage) return null;
+
+    if (profileImage.startsWith("http") || profileImage.startsWith("blob:")) {
+      return profileImage;
+    }
+
+    return `http://localhost:3000${profileImage}`;
+  };
+
   return (
     <div className="h-full relative w-full bg-[var(--bg-main)] text-[var(--text-main)] p-6">
+      {/* Header */}
       <div className="flex justify-between items-center mb-6">
         <h2 className="text-xl font-medium font-heading">Profile</h2>
 
         {(editName || editAbout || imageChanged) && (
           <button
             onClick={handleSave}
-            className="text-md font-medium text-[var(--accent-primary)] "
+            className="text-md font-medium text-[var(--accent-primary)]"
           >
             Save
           </button>
@@ -106,18 +123,14 @@ const Profile = () => {
 
       {/* Profile Image */}
       <div className="flex flex-col items-center mb-8 relative">
-        <div className=" relative">
+        <div className="relative">
           {!profileImage ? (
             <div className="rounded-full w-36 h-36 flex bg-[var(--bg-secondary)] justify-center items-center">
               <User size={80} className="text-[var(--text-secondary)]/70" />
             </div>
           ) : (
             <img
-              src={
-                profileImage.startsWith("blob:")
-                  ? profileImage
-                  : `http://localhost:3000${profileImage}`
-              }
+              src={getImageSrc()}
               alt="profile"
               className="w-36 h-36 rounded-full object-cover shadow-[var(--shadow-md)]"
             />

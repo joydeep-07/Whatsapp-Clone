@@ -1,6 +1,6 @@
 import { createSlice } from "@reduxjs/toolkit";
 
-// Load user from localStorage (if exists)
+// Load user from localStorage
 const userFromStorage = localStorage.getItem("user")
   ? JSON.parse(localStorage.getItem("user"))
   : null;
@@ -26,9 +26,18 @@ const authSlice = createSlice({
       state.token = token;
       state.isAuthenticated = true;
 
-      // Save to localStorage
       localStorage.setItem("user", JSON.stringify(user));
       localStorage.setItem("token", token);
+    },
+
+    // ✅ UPDATE USER AFTER PROFILE EDIT
+    updateUser: (state, action) => {
+      state.user = {
+        ...state.user,
+        ...action.payload,
+      };
+
+      localStorage.setItem("user", JSON.stringify(state.user));
     },
 
     logout: (state) => {
@@ -42,5 +51,5 @@ const authSlice = createSlice({
   },
 });
 
-export const { loginSuccess, logout } = authSlice.actions;
+export const { loginSuccess, logout, updateUser } = authSlice.actions;
 export default authSlice.reducer;

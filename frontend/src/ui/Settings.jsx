@@ -12,14 +12,14 @@ import {
   LogOut,
 } from "lucide-react";
 import Logout from "../components/Logout";
+import { useSelector, useDispatch } from "react-redux";
 
 const Settings = () => {
-  const user = {
-    name: "Paul",
-    about: "PotterHead ⚡",
-    profile:
-      "https://i.pinimg.com/736x/da/59/64/da59647bd31dd524c09991cb89949804.jpg",
-  };
+
+  const { user } = useSelector((state) => state.auth);
+  const dispatch = useDispatch();
+
+  
 
   const settingsItems = [
     {
@@ -82,15 +82,25 @@ const Settings = () => {
         </div>
 
         {/* Profile Section */}
+        {/* Profile Section */}
         <div className="flex items-center gap-4 mb-6">
           <img
-            src={user.profile}
+            src={
+              user?.profilePic
+                ? user.profilePic.startsWith("http") ||
+                  user.profilePic.startsWith("blob:")
+                  ? user.profilePic
+                  : `http://localhost:3000${user.profilePic}`
+                : "https://via.placeholder.com/150" 
+            }
             alt="profile"
             className="w-14 h-14 rounded-full object-cover"
           />
           <div>
             <p className="font-medium">{user.name}</p>
-            <p className="text-sm text-[var(--text-muted)]">{user.about}</p>
+            <p className="text-sm text-[var(--text-muted)]">
+              {user.about || "Hey there! I am using WhatsApp."}
+            </p>
           </div>
         </div>
 
@@ -122,7 +132,7 @@ const Settings = () => {
 
       {/* Logout Section (Sticky Bottom) */}
       <div className="p-6 ">
-       <Logout/>
+        <Logout />
       </div>
     </div>
   );
