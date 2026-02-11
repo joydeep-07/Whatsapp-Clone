@@ -1,11 +1,12 @@
-import React, { useState } from "react";
+import React from "react";
+import { useSelector } from "react-redux";
 import Dashboard from "../components/Dashboard";
 import Auth from "../components/Auth";
 
 const Home = () => {
-  const [isLogin, setIsLogin] = useState(false);
+  const { isAuthenticated } = useSelector((state) => state.auth);
 
-  return <div>{isLogin ? <Dashboard /> : <Auth />}</div>;
+  return <div>{isAuthenticated ? <Dashboard /> : <Auth />}</div>;
 };
 
 export default Home;

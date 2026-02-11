@@ -11,6 +11,7 @@ import {
   HelpCircle,
   LogOut,
 } from "lucide-react";
+import Logout from "../components/Logout";
 
 const Settings = () => {
   const user = {
@@ -121,21 +122,7 @@ const Settings = () => {
 
       {/* Logout Section (Sticky Bottom) */}
       <div className="p-6 ">
-        <button
-          onClick={handleLogout}
-          className="
-            w-full flex items-center justify-center gap-2
-            py-3 rounded-full
-            bg-[var(--error)]
-            text-white
-            hover:opacity-90
-            active:scale-[0.98]
-            transition-[var(--transition-fast)]
-          "
-        >
-          <LogOut size={18} />
-          Log out
-        </button>
+       <Logout/>
       </div>
     </div>
   );

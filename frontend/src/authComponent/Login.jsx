@@ -4,17 +4,19 @@ import { FaRegEye, FaRegEyeSlash } from "react-icons/fa";
 import { FcGoogle } from "react-icons/fc";
 import { IoLockClosedOutline, IoMailOutline } from "react-icons/io5";
 import axios from "axios";
+import { useDispatch } from "react-redux";
+import { loginSuccess } from "../redux/slices/authSlice";
 // import { useNavigate } from "react-router-dom";
 
 const Login = ({ onRegister }) => {
   // const navigate = useNavigate();
-
+  const dispatch = useDispatch();
   const [showPassword, setShowPassword] = useState(false);
 
   const {
     register,
     handleSubmit,
-    formState: { errors },
+    formState: { errors, isSubmitting },
     reset,
   } = useForm({
     mode: "onChange",
@@ -25,40 +27,41 @@ const Login = ({ onRegister }) => {
     },
   });
 
-   const onSubmit = async (data) => {
-     try {
-       const res = await axios.post("http://localhost:3000/api/auth/login", {
-         email: data.email,
-         password: data.password,
-       });
+  const onSubmit = async (data) => {
+    try {
+      const res = await axios.post("http://localhost:3000/api/auth/login", {
+        email: data.email,
+        password: data.password,
+      });
 
-       console.log("Login Success ✅", res.data);
+      // Dispatch to Redux
+      dispatch(
+        loginSuccess({
+          user: res.data.user,
+          token: res.data.token,
+        }),
+      );
 
-       // Store token
-       localStorage.setItem("token", res.data.token);
-       localStorage.setItem("user", JSON.stringify(res.data.user));
+      // Optional: Navigate to chat page
+      // navigate("/chat");
 
-       // Redirect to chat
-      //  navigate("/chat"); 
-
-       reset();
-     } catch (error) {
-       console.log(error.response?.data || error.message);
-       alert(error.response?.data?.message || "Login failed");
-     }
-   };
+      reset();
+    } catch (error) {
+      console.log(error.response?.data || error.message);
+      alert(error.response?.data?.message || "Login failed");
+    }
+  };
 
   return (
     <div className="w-full flex items-center justify-center">
       <form
         onSubmit={handleSubmit(onSubmit)}
-        className={`
+        className="
           w-80 md:w-96 flex flex-col
           bg-[var(--bg-main)] 
           p-6 rounded-xl 
           border border-[var(--border-light)]/50
-         
-        `}
+        "
         noValidate
       >
         <h2 className="text-3xl font-medium text-[var(--text-main)] font-heading">
@@ -72,14 +75,14 @@ const Login = ({ onRegister }) => {
         {/* Google Button */}
         <button
           type="button"
-          className={`
+          className="
             w-full mt-6 h-11 rounded-full
             flex items-center justify-center gap-2
             bg-[var(--bg-main)]
             border border-[var(--border-light)]
             hover:bg-[var(--bg-tertiary)]
             transition-[var(--transition-fast)]
-          `}
+          "
         >
           <FcGoogle className="text-xl" />
           <span className="text-sm font-medium text-[var(--text-main)]">
@@ -139,7 +142,7 @@ const Login = ({ onRegister }) => {
           </p>
         )}
 
-        {/* Remember Me + Submit */}
+        {/* Remember Me */}
         <div className="flex items-center justify-between mt-5 text-sm">
           <label className="flex items-center gap-2 cursor-pointer text-[var(--text-secondary)]">
             <input
@@ -151,18 +154,21 @@ const Login = ({ onRegister }) => {
           </label>
         </div>
 
+        {/* Submit Button */}
         <button
           type="submit"
-          className={`
+          disabled={isSubmitting}
+          className="
             mt-6 h-11 rounded-full 
             bg-[var(--accent-primary)] 
             text-white font-medium 
             hover:bg-[var(--accent-hover)] 
             transition-[var(--transition-base)]
             shadow-[var(--shadow-sm)]
-          `}
+            disabled:opacity-70
+          "
         >
-          Login
+          {isSubmitting ? "Logging in..." : "Login"}
         </button>
 
         {/* Register link */}

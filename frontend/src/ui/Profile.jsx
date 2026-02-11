@@ -1,4 +1,5 @@
 import { Pencil, Phone, Mail, LogOut } from "lucide-react";
+import Logout from "../components/Logout";
 
 const Profile = () => {
   const user = {
@@ -73,20 +74,7 @@ const Profile = () => {
 
       {/* Logout */}
       <div className="absolute bottom-6 left-0 w-full px-6">
-        <button
-          onClick={handleLogout}
-          className="
-            w-full flex items-center justify-center gap-2
-            py-3 rounded-full
-           text-white
-            border border-[var(--border-light)]
-            bg-[var(--error)]
-            transition-[var(--transition-fast)]
-          "
-        >
-          <LogOut size={18} />
-          Log out
-        </button>
+       <Logout/>
       </div>
     </div>
   );
