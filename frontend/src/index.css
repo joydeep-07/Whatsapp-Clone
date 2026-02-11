@@ -22,6 +22,10 @@
   /* blue Button */
    --accent-blue: #0f8dd5;
 
+   /* chat color */
+   --bg-chat: #d9fdd3;
+   --bg-other-chat: #fff;
+
   /* Status Colors - Harmonized with accent */
   --success: rgb(26, 124, 26);
   --warning: #b45309;
@@ -60,6 +64,10 @@
 
   /* blue Button */
   --accent-blue: #0f8dd5;
+
+  /* chat color */
+   --bg-chat: #005c4b;
+   --bg-other-chat: #202c33;
 
   /* Status Colors */
   --success: #66bb6a;

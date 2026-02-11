@@ -11,6 +11,8 @@ import {
 } from "lucide-react";
 import React, { useState, useRef, useEffect } from "react";
 import ContactInfo from "./ContactInfo";
+// import bg from '../assets/images/wtsp-bg.jpg'
+import bg from '../assets/images/chat-bg.png'
 
 const Chat = ({ user }) => {
   if (!user) {
@@ -50,15 +52,22 @@ const Chat = ({ user }) => {
   return (
     <div className="h-screen flex bg-[var(--bg-main)] text-[var(--text-main)] overflow-hidden">
       {/* CHAT AREA */}
+
       <div
+        // style={{
+        //   backgroundImage: `url(${bg})`,
+        //   backgroundSize: "cover",
+        //   backgroundPosition: "center",
+        //   backgroundColor: "var(--bg-secondary)",
+        // }}
         className={`
       flex flex-col
-      transition-[width] duration-300 ease-in-out
+      transition-[width] bg-[var(--bg-secondary)]/50 duration-300 ease-in-out
       ${isContactOpen ? "w-[70%] " : "w-full"}
     `}
       >
         {/* TOP BAR */}
-        <div className="shrink-0 bg-[var(--bg-secondary)]/30 px-4 py-3 border-b border-[var(--border-light)]/60">
+        <div className="shrink-0 bg-[var(--bg-main)] px-4 py-3 border-b border-[var(--border-light)]/60">
           <div className="flex items-center justify-between">
             {/* LEFT */}
             <div
@@ -102,10 +111,10 @@ const Chat = ({ user }) => {
               className={`flex ${msg.isOwn ? "justify-end" : "justify-start"}`}
             >
               <div
-                className={`max-w-[70%] px-4 py-2.5 rounded-2xl text-sm text-white shadow-sm ${
+                className={`max-w-[70%] px-4 py-2.5 rounded-2xl text-sm text-[var(--text-secondary)] shadow-sm ${
                   msg.isOwn
-                    ? "bg-[#d9fdd3] dark:bg-[#005c4b] rounded-br-none"
-                    : "bg-white dark:bg-[#202c33] rounded-bl-none"
+                    ? "bg-[var(--bg-chat)] rounded-br-none"
+                    : "bg-[var(--bg-other-chat)] rounded-bl-none"
                 }`}
               >
                 {msg.text}
