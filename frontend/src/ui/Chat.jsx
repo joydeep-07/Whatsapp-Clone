@@ -1,3 +1,4 @@
+// Chat.jsx
 import {
   Phone,
   Video,
@@ -11,18 +12,9 @@ import {
 } from "lucide-react";
 import React, { useState, useRef, useEffect } from "react";
 import ContactInfo from "./ContactInfo";
-// import bg from '../assets/images/wtsp-bg.jpg'
-import bg from '../assets/images/chat-bg.png'
+import { gsap } from "gsap";
 
 const Chat = ({ user }) => {
-  if (!user) {
-    return (
-      <div className="h-screen flex items-center justify-center text-[var(--text-muted)]">
-        Select a chat to start messaging
-      </div>
-    );
-  }
-
   const [messages, setMessages] = useState([
     {
       id: 1,
@@ -31,14 +23,25 @@ const Chat = ({ user }) => {
     },
     { id: 2, text: "Yep 😄 almost done!", isOwn: true },
   ]);
-
   const [inputValue, setInputValue] = useState("");
   const [isContactOpen, setIsContactOpen] = useState(false);
   const messagesEndRef = useRef(null);
+  const chatAreaRef = useRef(null);
 
   useEffect(() => {
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
   }, [messages]);
+
+  // Animate chat width when contact panel opens/closes
+  useEffect(() => {
+    if (chatAreaRef.current) {
+      gsap.to(chatAreaRef.current, {
+        width: isContactOpen ? "70%" : "100%",
+        duration: 0.5,
+        ease: "power3.inOut",
+      });
+    }
+  }, [isContactOpen]);
 
   const sendMessage = () => {
     if (!inputValue.trim()) return;
@@ -49,22 +52,20 @@ const Chat = ({ user }) => {
     setInputValue("");
   };
 
+  if (!user) {
+    return (
+      <div className="h-screen flex items-center justify-center text-[var(--text-muted)]">
+        Select a chat to start messaging
+      </div>
+    );
+  }
+
   return (
     <div className="h-screen flex bg-[var(--bg-main)] text-[var(--text-main)] overflow-hidden">
       {/* CHAT AREA */}
-
       <div
-        // style={{
-        //   backgroundImage: `url(${bg})`,
-        //   backgroundSize: "cover",
-        //   backgroundPosition: "center",
-        //   backgroundColor: "var(--bg-secondary)",
-        // }}
-        className={`
-      flex flex-col
-      transition-[width] bg-[var(--bg-secondary)]/50 duration-300 ease-in-out
-      ${isContactOpen ? "w-[70%] " : "w-full"}
-    `}
+        ref={chatAreaRef}
+        className="flex flex-col bg-[var(--bg-secondary)]/50"
       >
         {/* TOP BAR */}
         <div className="shrink-0 bg-[var(--bg-main)] px-4 py-3 border-b border-[var(--border-light)]/60">
@@ -85,7 +86,6 @@ const Chat = ({ user }) => {
                   <User />
                 </div>
               )}
-
               <div className="leading-tight">
                 <h1 className="text-sm font-medium">{user.name}</h1>
                 <p className="text-xs text-[var(--text-muted)]">
@@ -135,7 +135,6 @@ const Chat = ({ user }) => {
           <div className="flex items-center gap-3 border border-[var(--border-light)] rounded-3xl px-4 py-[10px]">
             <Smile size={18} />
             <Paperclip size={18} />
-
             <input
               value={inputValue}
               onChange={(e) => setInputValue(e.target.value)}
@@ -143,7 +142,6 @@ const Chat = ({ user }) => {
               placeholder="Type a message..."
               className="flex-1 bg-transparent outline-none"
             />
-
             {inputValue.trim() ? (
               <Send
                 onClick={sendMessage}
@@ -156,7 +154,7 @@ const Chat = ({ user }) => {
         </div>
       </div>
 
-      {/* CONTACT INFO (RIGHT PANEL) */}
+      {/* CONTACT INFO */}
       <ContactInfo
         isOpen={isContactOpen}
         onClose={() => setIsContactOpen(false)}
