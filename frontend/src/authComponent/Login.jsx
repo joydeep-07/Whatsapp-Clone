@@ -6,11 +6,9 @@ import { IoLockClosedOutline, IoMailOutline } from "react-icons/io5";
 import axios from "axios";
 import { useDispatch } from "react-redux";
 import { loginSuccess } from "../redux/slices/authSlice";
-// import { useNavigate } from "react-router-dom";
-import { BASE_URL, ENDPOINTS } from "../api/endPoint";
+import { ENDPOINTS } from "../api/endPoint";
 
 const Login = ({ onRegister }) => {
-  // const navigate = useNavigate();
   const dispatch = useDispatch();
   const [showPassword, setShowPassword] = useState(false);
 
@@ -35,16 +33,12 @@ const Login = ({ onRegister }) => {
         password: data.password,
       });
 
-      // Dispatch to Redux
       dispatch(
         loginSuccess({
           user: res.data.user,
           token: res.data.token,
         }),
       );
-
-      // Optional: Navigate to chat page
-      // navigate("/chat");
 
       reset();
     } catch (error) {
