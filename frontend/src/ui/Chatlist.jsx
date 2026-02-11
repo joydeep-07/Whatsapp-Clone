@@ -126,11 +126,11 @@ const Chatlist = ({ onSelectUser, onAddContact, onOpenAiChat }) => {
           );
         })}
       </div>
-      <div className="absolute bottom-6 right-6 flex flex-col items-center justify-center gap-4">
+      <div className="absolute bottom-20 right-6 flex flex-col items-center justify-center gap-4">
         <div onClick={onOpenAiChat} className="cursor-pointer">
           <AiLogo />
         </div>
-        <MyContacts />
+        {/* <MyContacts /> */}
       </div>
     </div>
   );
