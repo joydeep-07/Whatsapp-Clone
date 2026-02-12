@@ -35,29 +35,69 @@ const AiChat = () => {
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
   }, [messages]);
 
-  const sendMessage = () => {
-    if (!inputValue.trim()) return;
+ const sendMessage = async () => {
+   if (!inputValue.trim()) return;
 
-    // Add user message
-    const userMsg = {
-      id: Date.now(),
-      text: inputValue,
-      isOwn: true,
-    };
+   const userMsg = {
+     id: Date.now(),
+     text: inputValue,
+     isOwn: true,
+   };
 
-    setMessages((prev) => [...prev, userMsg]);
-    setInputValue("");
+   setMessages((prev) => [...prev, userMsg]);
+   setInputValue("");
 
-    // Simulate AI reply (in real app → call API)
-    setTimeout(() => {
-      const aiReply = {
-        id: Date.now() + 1,
-        text: "Here's a quick example... 😉 Let me know what you'd like to improve!",
-        isOwn: false,
-      };
-      setMessages((prev) => [...prev, aiReply]);
-    }, 1200);
-  };
+   try {
+     const res = await fetch("http://localhost:3000/api/chatbot/send", {
+       method: "POST",
+       headers: {
+         "Content-Type": "application/json",
+         Authorization: `Bearer ${localStorage.getItem("token")}`,
+       },
+       body: JSON.stringify({ message: userMsg.text }),
+     });
+
+     const data = await res.json();
+
+     if (data.success) {
+       const aiReply = {
+         id: Date.now() + 1,
+         text: data.reply,
+         isOwn: false,
+       };
+
+       setMessages((prev) => [...prev, aiReply]);
+     }
+   } catch (error) {
+     console.error("AI Error:", error);
+   }
+ };
+
+ useEffect(() => {
+   const fetchHistory = async () => {
+     const res = await fetch("http://localhost:3000/api/chatbot/history", {
+       headers: {
+         Authorization: `Bearer ${localStorage.getItem("token")}`,
+       },
+     });
+
+     const data = await res.json();
+
+     if (data.success) {
+       const formatted = data.messages.map((msg, index) => ({
+         id: index,
+         text: msg.content,
+         isOwn: msg.role === "user",
+       }));
+
+       setMessages(formatted);
+     }
+   };
+
+   fetchHistory();
+ }, []);
+
+
 
   return (
     <div className="h-screen flex bg-[var(--bg-main)] text-[var(--text-main)] overflow-hidden">

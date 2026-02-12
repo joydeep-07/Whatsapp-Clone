@@ -132,7 +132,7 @@ const Profile = () => {
             <img
               src={getImageSrc()}
               alt="profile"
-              className="w-36 h-36 rounded-full object-cover shadow-[var(--shadow-md)]"
+              className="w-36 h-36 rounded-full object-cover"
             />
           )}
 
