@@ -8,6 +8,7 @@ import {
 import React, { useState, useRef, useEffect } from "react";
 import AiLogo from "./AiLogo";
 import { IoSend } from "react-icons/io5";
+import {ENDPOINTS} from "../api/endPoint";
 
 const AiChat = () => {
   const [messages, setMessages] = useState([
@@ -48,7 +49,7 @@ const AiChat = () => {
    setInputValue("");
 
    try {
-     const res = await fetch("http://localhost:3000/api/chatbot/send", {
+     const res = await fetch(ENDPOINTS.CHAT_SEND, {
        method: "POST",
        headers: {
          "Content-Type": "application/json",
@@ -75,7 +76,7 @@ const AiChat = () => {
 
  useEffect(() => {
    const fetchHistory = async () => {
-     const res = await fetch("http://localhost:3000/api/chatbot/history", {
+     const res = await fetch(ENDPOINTS.CHAT_HISTORY, {
        headers: {
          Authorization: `Bearer ${localStorage.getItem("token")}`,
        },

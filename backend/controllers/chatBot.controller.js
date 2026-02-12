@@ -107,3 +107,35 @@ exports.getChatHistory = async (req, res) => {
     });
   }
 };
+
+
+// 🔹 Delete / Clear Chat History
+exports.deleteChatHistory = async (req, res) => {
+  try {
+    const userId = req.user.id;
+
+    const chat = await ChatBot.findOne({ user: userId });
+
+    if (!chat) {
+      return res.status(404).json({
+        success: false,
+        message: "No chat history found",
+      });
+    }
+
+    // Clear messages array
+    chat.messages = [];
+    await chat.save();
+
+    res.json({
+      success: true,
+      message: "Chat history cleared successfully",
+    });
+  } catch (error) {
+    console.error("Delete Chat Error:", error);
+    res.status(500).json({
+      success: false,
+      message: "Server Error",
+    });
+  }
+};

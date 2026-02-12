@@ -10,4 +10,9 @@ export const ENDPOINTS = {
   // 👤 Profile
   UPDATE_PROFILE: `${BASE_URL}/api/profile/update`,
   UPLOAD_PROFILE_IMAGE: `${BASE_URL}/api/profile/upload-image`,
+
+  // 🤖 ChatBot
+  CHAT_SEND: `${BASE_URL}/api/chatbot/send`,
+  CHAT_HISTORY: `${BASE_URL}/api/chatbot/history`,
+  CHAT_DELETE: `${BASE_URL}/api/chatbot/delete`,
 };

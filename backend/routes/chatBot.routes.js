@@ -5,5 +5,6 @@ const authMiddleware = require("../middlewares/authMiddleware"); // your existin
 
 router.post("/send", authMiddleware, chatBotController.sendMessage);
 router.get("/history", authMiddleware, chatBotController.getChatHistory);
+router.delete("/delete", authMiddleware, chatBotController.deleteChatHistory);
 
 module.exports = router;
