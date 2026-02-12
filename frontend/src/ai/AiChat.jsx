@@ -28,16 +28,45 @@ const AiChat = () => {
         remarkPlugins={[remarkGfm]}
         components={{
           code({ inline, children, ...props }) {
+            const [copied, setCopied] = React.useState(false);
+            const codeText = String(children).replace(/\n$/, "");
+
+            const handleCopy = async () => {
+              try {
+                await navigator.clipboard.writeText(codeText);
+                setCopied(true);
+
+                setTimeout(() => {
+                  setCopied(false);
+                }, 2000); // 2000ms = 2 seconds
+              } catch (err) {
+                console.error("Copy failed:", err);
+              }
+            };
+
             return !inline ? (
-              <pre className="bg-[var(--code-bg)]/50 text-[var(--code-text)] p-3 rounded-lg overflow-x-auto text-xs my-2">
-                <code {...props}>{children}</code>
-              </pre>
+              <div className="relative my-3 group">
+                {/* Copy Button */}
+                <button
+                  onClick={handleCopy}
+                  className="absolute top-2 right-2 text-xs px-2 py-1 rounded-md 
+                   bg-[var(--code-bg)] border border-[var(--border-light)] 
+                   transition text-[var(--text-secondary)]"
+                >
+                  {copied ? "Copied!" : "Copy"}
+                </button>
+
+                <pre className="bg-[var(--code-bg)]/50 text-[var(--code-text)] p-4 pt-8 rounded-lg overflow-x-auto text-xs">
+                  <code {...props}>{codeText}</code>
+                </pre>
+              </div>
             ) : (
               <code className="bg-gray-200 dark:bg-gray-700 px-1 py-0.5 rounded text-xs">
                 {children}
               </code>
             );
           },
+
           ul: ({ children }) => (
             <ul className="list-disc ml-5 space-y-1 my-2">{children}</ul>
           ),
