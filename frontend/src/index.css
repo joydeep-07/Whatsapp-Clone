@@ -20,11 +20,15 @@
   --accent-soft: #588157;
 
   /* blue Button */
-   --accent-blue: #0f8dd5;
+  --accent-blue: #0f8dd5;
 
-   /* chat color */
-   --bg-chat: #d9fdd3;
-   --bg-other-chat: #fff;
+  /* chat color */
+  --bg-chat: #d9fdd3;
+  --bg-other-chat: #fff;
+
+  /* Code */
+  --code-bg: #f4f6f8; /* soft cool grey */
+  --code-text: #1f2937;
 
   /* Status Colors - Harmonized with accent */
   --success: rgb(26, 124, 26);
@@ -66,8 +70,11 @@
   --accent-blue: #0f8dd5;
 
   /* chat color */
-   --bg-chat: #005c4b;
-   --bg-other-chat: #202c33;
+  --bg-chat: #005c4b;
+  --bg-other-chat: #202c33;
+
+  --code-bg: #111827;        /* deep slate */
+  --code-text: #e5e7eb; 
 
   /* Status Colors */
   --success: #66bb6a;

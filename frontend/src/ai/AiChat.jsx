@@ -29,7 +29,7 @@ const AiChat = () => {
         components={{
           code({ inline, children, ...props }) {
             return !inline ? (
-              <pre className="bg-black text-green-400 p-3 rounded-lg overflow-x-auto text-xs my-2">
+              <pre className="bg-[var(--code-bg)]/50 text-[var(--code-text)] p-3 rounded-lg overflow-x-auto text-xs my-2">
                 <code {...props}>{children}</code>
               </pre>
             ) : (
