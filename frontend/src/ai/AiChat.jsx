@@ -1,118 +1,162 @@
-import {
-  MoreVertical,
-  Smile,
-  Paperclip,
-  Mic,
-  CheckCheck,
-} from "lucide-react";
+import { MoreVertical, Smile, Paperclip, Mic, CheckCheck } from "lucide-react";
 import React, { useState, useRef, useEffect } from "react";
+import ReactMarkdown from "react-markdown";
+import remarkGfm from "remark-gfm";
 import AiLogo from "./AiLogo";
 import { IoSend } from "react-icons/io5";
-import {ENDPOINTS} from "../api/endPoint";
+import { ENDPOINTS } from "../api/endPoint";
 import ChatMenu from "./ChatMenu";
 
 const AiChat = () => {
-  const [messages, setMessages] = useState([
-    {
-      id: 1,
-      text: "Hey! I'm Meta AI, ask me anything 😄",
-      isOwn: false,
-    },
-    {
-      id: 2,
-      text: "Can you help me write a cool React component?",
-      isOwn: true,
-    },
-    {
-      id: 3,
-      text: "Sure! What kind of component are you looking for? 🚀",
-      isOwn: false,
-    },
-  ]);
-
+  const [messages, setMessages] = useState([]);
   const [inputValue, setInputValue] = useState("");
   const messagesEndRef = useRef(null);
 
+  /* ===============================
+     Auto Scroll
+  =============================== */
   useEffect(() => {
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
   }, [messages]);
 
- const sendMessage = async () => {
-   if (!inputValue.trim()) return;
+  /* ===============================
+     Format Markdown Message
+  =============================== */
+  const renderFormattedMessage = (text) => {
+    return (
+      <ReactMarkdown
+        remarkPlugins={[remarkGfm]}
+        components={{
+          code({ inline, children, ...props }) {
+            return !inline ? (
+              <pre className="bg-black text-green-400 p-3 rounded-lg overflow-x-auto text-xs my-2">
+                <code {...props}>{children}</code>
+              </pre>
+            ) : (
+              <code className="bg-gray-200 dark:bg-gray-700 px-1 py-0.5 rounded text-xs">
+                {children}
+              </code>
+            );
+          },
+          ul: ({ children }) => (
+            <ul className="list-disc ml-5 space-y-1 my-2">{children}</ul>
+          ),
+          ol: ({ children }) => (
+            <ol className="list-decimal ml-5 space-y-1 my-2">{children}</ol>
+          ),
+          p: ({ children }) => (
+            <p className="mb-2 leading-relaxed">{children}</p>
+          ),
+          h1: ({ children }) => (
+            <h1 className="text-lg font-semibold my-2">{children}</h1>
+          ),
+          h2: ({ children }) => (
+            <h2 className="text-base font-semibold my-2">{children}</h2>
+          ),
+          h3: ({ children }) => (
+            <h3 className="text-sm font-semibold my-2">{children}</h3>
+          ),
+        }}
+      >
+        {text}
+      </ReactMarkdown>
+    );
+  };
 
-   const userMsg = {
-     id: Date.now(),
-     text: inputValue,
-     isOwn: true,
-   };
+  /* ===============================
+     Send Message
+  =============================== */
+  const sendMessage = async () => {
+    if (!inputValue.trim()) return;
 
-   setMessages((prev) => [...prev, userMsg]);
-   setInputValue("");
+    const userMsg = {
+      id: Date.now(),
+      text: inputValue,
+      isOwn: true,
+      time: new Date().toLocaleTimeString([], {
+        hour: "2-digit",
+        minute: "2-digit",
+      }),
+    };
 
-   try {
-     const res = await fetch(ENDPOINTS.CHAT_SEND, {
-       method: "POST",
-       headers: {
-         "Content-Type": "application/json",
-         Authorization: `Bearer ${localStorage.getItem("token")}`,
-       },
-       body: JSON.stringify({ message: userMsg.text }),
-     });
+    setMessages((prev) => [...prev, userMsg]);
+    setInputValue("");
 
-     const data = await res.json();
+    try {
+      const res = await fetch(ENDPOINTS.CHAT_SEND, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
+        },
+        body: JSON.stringify({ message: userMsg.text }),
+      });
 
-     if (data.success) {
-       const aiReply = {
-         id: Date.now() + 1,
-         text: data.reply,
-         isOwn: false,
-       };
+      const data = await res.json();
 
-       setMessages((prev) => [...prev, aiReply]);
-     }
-   } catch (error) {
-     console.error("AI Error:", error);
-   }
- };
+      if (data.success) {
+        const aiReply = {
+          id: Date.now() + 1,
+          text: data.reply,
+          isOwn: false,
+          time: new Date().toLocaleTimeString([], {
+            hour: "2-digit",
+            minute: "2-digit",
+          }),
+        };
 
- useEffect(() => {
-   const fetchHistory = async () => {
-     const res = await fetch(ENDPOINTS.CHAT_HISTORY, {
-       headers: {
-         Authorization: `Bearer ${localStorage.getItem("token")}`,
-       },
-     });
+        setMessages((prev) => [...prev, aiReply]);
+      }
+    } catch (error) {
+      console.error("AI Error:", error);
+    }
+  };
 
-     const data = await res.json();
+  /* ===============================
+     Fetch Chat History
+  =============================== */
+  useEffect(() => {
+    const fetchHistory = async () => {
+      try {
+        const res = await fetch(ENDPOINTS.CHAT_HISTORY, {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
+          },
+        });
 
-     if (data.success) {
-       const formatted = data.messages.map((msg, index) => ({
-         id: index,
-         text: msg.content,
-         isOwn: msg.role === "user",
-       }));
+        const data = await res.json();
 
-       setMessages(formatted);
-     }
-   };
+        if (data.success) {
+          const formatted = data.messages.map((msg, index) => ({
+            id: index,
+            text: msg.content,
+            isOwn: msg.role === "user",
+            time: new Date().toLocaleTimeString([], {
+              hour: "2-digit",
+              minute: "2-digit",
+            }),
+          }));
 
-   fetchHistory();
- }, []);
+          setMessages(formatted);
+        }
+      } catch (err) {
+        console.error("History Error:", err);
+      }
+    };
 
-
+    fetchHistory();
+  }, []);
 
   return (
     <div className="h-screen flex bg-[var(--bg-main)] text-[var(--text-main)] overflow-hidden">
-      {/* CHAT AREA — full width (no right panel for AI) */}
       <div className="flex flex-col w-full">
-        {/* TOP BAR */}
-        <div className="shrink-0 bg-[var(--bg-secondary)]/30 px-4 py-3 border-b border-[var(--border-light)]/60">
+        {/* ===============================
+           TOP BAR
+        =============================== */}
+        <div className="shrink-0 px-4 py-3 border-b border-[var(--border-light)]/60">
           <div className="flex items-center justify-between">
-            {/* LEFT — Meta AI avatar + name */}
             <div className="flex items-center gap-3">
-              {/* Meta AI gradient avatar */}
               <AiLogo />
-
               <div className="leading-tight">
                 <h1 className="text-sm font-medium">Meta AI</h1>
                 <p className="text-xs text-[var(--text-muted)]">
@@ -120,31 +164,34 @@ const AiChat = () => {
                 </p>
               </div>
             </div>
-
-            {/* RIGHT — icons */}
-            <div className="flex items-center gap-6 text-[var(--text-secondary)]">
-              <ChatMenu onChatDeleted={() => setMessages([])} />
-            </div>
+            <ChatMenu onChatDeleted={() => setMessages([])} />
           </div>
         </div>
 
-        {/* CHAT BODY */}
-        <div className="flex-1 overflow-y-auto px-6 py-6 space-y-4">
+        {/* ===============================
+           CHAT BODY
+        =============================== */}
+        <div className="flex-1 overflow-y-auto  bg-[var(--bg-secondary)]/30 px-6 py-6 space-y-4">
           {messages.map((msg) => (
             <div
               key={msg.id}
               className={`flex ${msg.isOwn ? "justify-end" : "justify-start"}`}
             >
               <div
-                className={`max-w-[70%] px-4 py-2.5 rounded-2xl text-sm shadow-sm ${
+                className={`max-w-[70%] px-4 py-2.5 rounded-2xl text-sm text-[var(--text-secondary)] shadow-sm ${
                   msg.isOwn
-                    ? "bg-[#d9fdd3] dark:bg-[#005c4b] rounded-br-none"
-                    : "bg-white dark:bg-[#202c33] rounded-bl-none"
+                    ? "bg-[var(--bg-chat)] rounded-br-none"
+                    : "bg-[var(--bg-other-chat)] rounded-bl-none"
                 }`}
               >
-                {msg.text}
-                <div className="flex items-center gap-1 text-xs mt-1 justify-end opacity-70">
-                  08:24 PM
+                {msg.isOwn ? (
+                  <div className="whitespace-pre-wrap">{msg.text}</div>
+                ) : (
+                  renderFormattedMessage(msg.text)
+                )}
+
+                <div className="flex items-center gap-1 text-xs mt-2 justify-end opacity-70">
+                  {msg.time}
                   {msg.isOwn && (
                     <CheckCheck size={14} className="text-blue-500" />
                   )}
@@ -155,7 +202,9 @@ const AiChat = () => {
           <div ref={messagesEndRef} />
         </div>
 
-        {/* INPUT BAR — same style */}
+        {/* ===============================
+           INPUT BAR
+        =============================== */}
         <div className="shrink-0 border-t border-[var(--border-light)] bg-[var(--bg-main)] px-4 py-3">
           <div className="flex items-center gap-3 border border-[var(--border-light)] rounded-3xl px-4 py-[10px]">
             <Smile size={18} />
@@ -172,7 +221,7 @@ const AiChat = () => {
             {inputValue.trim() ? (
               <IoSend
                 onClick={sendMessage}
-                className="cursor-pointer text-xl text-[var(--text-secondary)]/70 "
+                className="cursor-pointer text-xl text-[var(--text-secondary)]/70"
               />
             ) : (
               <Mic />
