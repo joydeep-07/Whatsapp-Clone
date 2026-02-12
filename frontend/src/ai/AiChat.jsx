@@ -111,7 +111,7 @@ const AiChat = () => {
             {/* LEFT — Meta AI avatar + name */}
             <div className="flex items-center gap-3">
               {/* Meta AI gradient avatar */}
-             <AiLogo/>
+              <AiLogo />
 
               <div className="leading-tight">
                 <h1 className="text-sm font-medium">Meta AI</h1>
@@ -123,7 +123,7 @@ const AiChat = () => {
 
             {/* RIGHT — icons */}
             <div className="flex items-center gap-6 text-[var(--text-secondary)]">
-             <ChatMenu/>
+              <ChatMenu onChatDeleted={() => setMessages([])} />
             </div>
           </div>
         </div>
