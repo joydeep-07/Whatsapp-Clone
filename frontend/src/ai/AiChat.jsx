@@ -9,6 +9,7 @@ import React, { useState, useRef, useEffect } from "react";
 import AiLogo from "./AiLogo";
 import { IoSend } from "react-icons/io5";
 import {ENDPOINTS} from "../api/endPoint";
+import ChatMenu from "./ChatMenu";
 
 const AiChat = () => {
   const [messages, setMessages] = useState([
@@ -120,11 +121,9 @@ const AiChat = () => {
               </div>
             </div>
 
-            {/* RIGHT — icons (optional for AI — can remove Phone/Video if you want) */}
+            {/* RIGHT — icons */}
             <div className="flex items-center gap-6 text-[var(--text-secondary)]">
-              {/* <Video className="cursor-pointer" />
-              <Phone className="cursor-pointer" /> */}
-              <MoreVertical className="cursor-pointer" />
+             <ChatMenu/>
             </div>
           </div>
         </div>
