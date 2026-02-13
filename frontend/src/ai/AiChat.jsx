@@ -38,7 +38,7 @@ const AiChat = () => {
 
                 setTimeout(() => {
                   setCopied(false);
-                }, 2000); // 2000ms = 2 seconds
+                }, 2000); 
               } catch (err) {
                 console.error("Copy failed:", err);
               }
@@ -49,7 +49,7 @@ const AiChat = () => {
                 {/* Copy Button */}
                 <button
                   onClick={handleCopy}
-                  className="absolute top-2 right-2 text-xs px-2 py-1 rounded-md 
+                  className="absolute top-2 right-2 text-xs px-2 py-1 rounded-sm
                    bg-[var(--code-bg)] border border-[var(--border-light)] 
                    transition text-[var(--text-secondary)]"
                 >
