@@ -4,7 +4,7 @@
   "main": "server.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start" : "npx nodemon server.js"
+    "start": "npx nodemon server.js"
   },
   "keywords": [],
   "author": "",
@@ -19,6 +19,7 @@
     "jsonwebtoken": "^9.0.3",
     "mongoose": "^9.2.0",
     "multer": "^2.0.2",
-    "openai": "^6.21.0"
+    "openai": "^6.21.0",
+    "socket.io": "^4.8.3"
   }
 }
