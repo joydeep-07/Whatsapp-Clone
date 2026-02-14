@@ -249,17 +249,41 @@ const Chat = ({ user }) => {
               className={`flex ${msg.isOwn ? "justify-end" : "justify-start"}`}
             >
               <div
-                className={`max-w-[70%] px-4 py-2.5 flex justify-between items-end gap-4 text-justify min-w-[125px] rounded-2xl text-sm text-[var(--text-secondary)] shadow-sm ${
-                  msg.isOwn
-                    ? "bg-[var(--bg-chat)] rounded-br-none"
-                    : "bg-[var(--bg-other-chat)] rounded-bl-none"
-                }`}
+                className={`
+    relative
+    max-w-[75%] min-w-[120px]
+    px-3.5 py-2 pb-6                 /* WhatsApp padding */
+    rounded-2xl text-[15px] leading-[19px]
+    break-words whitespace-pre-wrap
+    shadow-sm
+
+    ${
+      msg.isOwn
+        ? "bg-[var(--bg-chat)] rounded-br-none ml-auto"
+        : "bg-[var(--bg-other-chat)] rounded-bl-none mr-auto"
+    }
+  `}
               >
-                {msg.text}
-                <div className="flex items-center gap-1 text-xs mt-1 justify-end">
+                {/* Message text */}
+                <p className="text-[var(--text-secondary)]">{msg.text}</p>
+
+                {/* Time + ticks (absolute bottom-right) */}
+                <div
+                  className={`
+      absolute bottom-1 right-3
+      flex items-center gap-1
+      text-xs font-normal
+      text-[var(--text-secondary)]
+      opacity-75
+    `}
+                >
                   {formatTime(msg.time)}
+
                   {msg.isOwn && (
-                    <CheckCheck size={14} className="text-[var(--accent-blue)] " />
+                    <CheckCheck
+                      size={15}
+                      className="text-[var(--accent-blue)] -mt-px"
+                    />
                   )}
                 </div>
               </div>

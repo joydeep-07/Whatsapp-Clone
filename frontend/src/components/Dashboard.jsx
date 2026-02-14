@@ -32,7 +32,7 @@ const Dashboard = () => {
               setSelectedUser(null);
               setRightView("ai");
             }}
-            onContactClick={() => setActivePanel("contacts")} // ← handle contact click
+            onContactClick={() => setActivePanel("contacts")} 
           />
         );
       case "status":
@@ -50,26 +50,48 @@ const Dashboard = () => {
 
 
   return (
-    <div className="flex">
-      <SidePanel setActivePanel={setActivePanel} />
+    <div className="flex h-screen overflow-hidden">
+      {/* SidePanel - Hidden on small screens */}
+      <div className="hidden md:block">
+        <SidePanel setActivePanel={setActivePanel} />
+      </div>
 
-      {/* LEFT */}
-      <div className="w-1/4 h-screen bg-[var(--bg-main)]">
+      {/* LEFT PANEL */}
+      <div
+        className={`
+        bg-[var(--bg-main)] h-full
+        w-full md:w-1/3 lg:w-1/4
+        ${rightView === "chat" ? "hidden md:block" : "block"}
+      `}
+      >
         {renderLeftPanel()}
       </div>
 
-      {/* RIGHT */}
-      <div className="w-3/4 h-screen bg-[var(--bg-main)]">
-        {rightView === "chat" && selectedUser && <Chat user={selectedUser} />}
+      {/* RIGHT PANEL */}
+      <div
+        className={`
+        bg-[var(--bg-main)] h-full
+        w-full md:w-2/3 lg:w-3/4
+        ${rightView === "chat" ? "block" : "hidden md:block"}
+      `}
+      >
+        {rightView === "chat" && selectedUser && (
+          <Chat
+            user={selectedUser}
+            onBack={() => {
+              setRightView("empty");
+              setSelectedUser(null);
+            }}
+          />
+        )}
 
         {rightView === "addContact" && <AddContact />}
-
         {rightView === "ai" && <AiChat />}
-
         {rightView === "empty" && <SelectChat />}
       </div>
     </div>
   );
+
 };
 
 export default Dashboard;
