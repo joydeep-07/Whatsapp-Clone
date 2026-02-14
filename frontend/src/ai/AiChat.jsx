@@ -6,6 +6,7 @@ import AiLogo from "./AiLogo";
 import { IoSend } from "react-icons/io5";
 import { ENDPOINTS } from "../api/endPoint";
 import ChatMenu from "./ChatMenu";
+import { MdVerified } from "react-icons/md";
 
 const AiChat = () => {
   const [messages, setMessages] = useState([]);
@@ -187,7 +188,9 @@ const AiChat = () => {
             <div className="flex items-center gap-3">
               <AiLogo />
               <div className="leading-tight">
-                <h1 className="text-sm font-medium">Meta AI</h1>
+                <h1 className="text-sm font-medium flex justify-start gap-2 items-center">
+                  Meta AI <MdVerified className=" text-[var(--accent-blue)] " />
+                </h1>
                 <p className="text-xs text-[var(--text-muted)]">
                   AI assistant • Powered by Meta
                 </p>
