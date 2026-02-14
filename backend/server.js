@@ -35,6 +35,7 @@ app.use("/api/auth", authRoutes);
 app.use("/uploads", express.static("uploads"));
 app.use("/api/profile", require("./routes/profile.routes"));
 app.use("/api/chatbot", require("./routes/chatBot.routes"));
+app.use("/api/users", require("./routes/user.routes"));
 
 /* Start Server */
 app.listen(PORT, () => {
