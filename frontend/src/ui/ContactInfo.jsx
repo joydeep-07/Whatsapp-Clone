@@ -2,6 +2,7 @@
 import { useEffect, useRef } from "react";
 import { gsap } from "gsap";
 import { User, X, Mail, Phone, Globe, Heart } from "lucide-react";
+import { BASE_URL } from "../api/endPoint";
 
 const ContactInfo = ({ isOpen, onClose, user }) => {
   const panelRef = useRef(null);
@@ -42,9 +43,9 @@ const ContactInfo = ({ isOpen, onClose, user }) => {
 
       {/* PROFILE */}
       <div className="flex flex-col items-center py-6">
-        {user.profile ? (
+        {user.profilePic ? (
           <img
-            src={user.profile}
+            src={`${BASE_URL}${user.profilePic}`}
             alt={user.name}
             className="h-32 w-32 rounded-full object-cover"
           />

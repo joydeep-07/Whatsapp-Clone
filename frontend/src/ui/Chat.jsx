@@ -12,6 +12,8 @@ import {
 import React, { useState, useRef, useEffect } from "react";
 import ContactInfo from "./ContactInfo";
 import { gsap } from "gsap";
+import { BASE_URL } from "../api/endPoint";
+
 
 const Chat = ({ user }) => {
   const [messages, setMessages] = useState([
@@ -82,9 +84,9 @@ const Chat = ({ user }) => {
               className="flex items-center gap-3 cursor-pointer"
               onClick={() => setIsContactOpen((p) => !p)}
             >
-              {user.profile ? (
+              {user.profilePic ? (
                 <img
-                  src={user.profile}
+                  src={`${BASE_URL}${user.profilePic}`}
                   alt={user.name}
                   className="h-12 w-12 rounded-full object-cover border border-[var(--border-light)]"
                 />
