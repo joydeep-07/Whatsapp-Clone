@@ -5,40 +5,59 @@ import {
   Search,
   User,
 } from "lucide-react";
-import React, { useState } from "react";
-import users from "../assets/users"; // ← assuming this is your static array
+import React, { useState, useEffect } from "react";
+import axios from "axios";
+import { ENDPOINTS } from "../api/endPoint";
 import MyContacts from "./MyContacts";
 import AiLogo from "../ai/AiLogo";
+import { BASE_URL } from "../api/endPoint";
 
-const Chatlist = ({
-  onSelectUser,
-  onAddContact,
-  onOpenAiChat,
-  onContactClick,
-}) => {
+
+const Chatlist = ({ onSelectUser, onAddContact, onOpenAiChat, onContactClick }) => {
+  const [users, setUsers] = useState([]); // ← dynamic users
   const [selectedUserId, setSelectedUserId] = useState(null);
-  const [searchTerm, setSearchTerm] = useState(""); // ← added
+  const [searchTerm, setSearchTerm] = useState("");
+  const [loading, setLoading] = useState(false);
+
+  // ✅ Fetch all users from backend
+  useEffect(() => {
+    const fetchUsers = async () => {
+      try {
+        setLoading(true);
+
+        const res = await axios.get(ENDPOINTS.ALL_USER);
+
+        setUsers(res.data.users); // because backend returns { users: [...] }
+      } catch (error) {
+        console.error("Error fetching users:", error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchUsers();
+  }, []);
 
   const handleSelectUser = (user) => {
-    setSelectedUserId(user.id);
+    setSelectedUserId(user._id); // use _id from MongoDB
     onSelectUser(user);
   };
 
-  // Filter users based on name OR email
+  // ✅ Filter users
   const filteredUsers = users.filter((user) => {
     if (!searchTerm.trim()) return true;
 
     const term = searchTerm.toLowerCase().trim();
 
     const nameMatch = user.name?.toLowerCase().includes(term);
-    const emailMatch = user.email?.toLowerCase().includes(term); // works if email exists
+    const emailMatch = user.email?.toLowerCase().includes(term);
 
     return nameMatch || emailMatch;
   });
 
   return (
     <div className="h-screen relative flex flex-col bg-[var(--bg-main)] text-[var(--text-main)]">
-      {/* Fixed header section – unchanged */}
+      {/* Header Section (unchanged) */}
       <div className="shrink-0 px-4 pt-5 pb-4 space-y-4 border-b border-[var(--border-light)]">
         <div className="flex items-center justify-between">
           <h1 className="font-body text-xl tracking-wider">Chats</h1>
@@ -51,7 +70,7 @@ const Chatlist = ({
           </div>
         </div>
 
-        {/* Search – now controlled + real filtering */}
+        {/* Search */}
         <div className="flex items-center border border-[var(--border-light)] pl-4 gap-3 h-10 rounded-full bg-[var(--bg-tertiary)]/40 overflow-hidden">
           <Search className="text-[var(--text-muted)]" size={18} />
           <input
@@ -62,34 +81,25 @@ const Chatlist = ({
             className="flex-1 h-full bg-transparent outline-none text-[var(--text-secondary)] placeholder-[var(--text-muted)] text-sm"
           />
         </div>
-
-        {/* Filter badges – unchanged */}
-        <div className="flex gap-2 flex-wrap">
-          <button className="py-1 px-4 rounded-full text-xs font-medium bg-[var(--accent-primary)]/20 text-[var(--accent-primary)] border border-[var(--accent-primary)]/30">
-            All
-          </button>
-          <button className="py-1 px-4 rounded-full text-xs font-medium bg-[var(--bg-secondary)] text-[var(--text-secondary)] border border-[var(--border-light)]">
-            Unread
-          </button>
-          <button className="py-1 px-4 rounded-full text-xs font-medium bg-[var(--bg-secondary)] text-[var(--text-secondary)] border border-[var(--border-light)]">
-            Group
-          </button>
-        </div>
       </div>
 
-      {/* Users list – now shows filteredUsers */}
-      <div className="flex-1 overflow-y-auto px-3 py-2 scrollbar-thin scrollbar-thumb-[var(--scroll-thumb)] scrollbar-track-transparent">
-        {filteredUsers.length === 0 ? (
+      {/* Users List */}
+      <div className="flex-1 overflow-y-auto px-3 py-2">
+        {loading ? (
+          <div className="text-center text-sm text-[var(--text-muted)]">
+            Loading users...
+          </div>
+        ) : filteredUsers.length === 0 ? (
           <div className="flex flex-col items-center justify-center h-full text-[var(--text-muted)] text-sm">
-            No matching contacts
+            No matching users
           </div>
         ) : (
           filteredUsers.map((user) => {
-            const isSelected = selectedUserId === user.id;
+            const isSelected = selectedUserId === user._id;
 
             return (
               <div
-                key={user.id}
+                key={user._id}
                 onClick={() => handleSelectUser(user)}
                 className={`
                   flex items-center gap-4 py-3 px-3 -mx-3 cursor-pointer transition-colors
@@ -100,11 +110,11 @@ const Chatlist = ({
                   }
                 `}
               >
-                {/* Avatar – unchanged */}
+                {/* Avatar */}
                 <div className="relative">
-                  {user.profile ? (
+                  {user.profilePic ? (
                     <img
-                      src={user.profile}
+                      src={`${BASE_URL}${user.profilePic}`}
                       alt={user.name}
                       className="h-12 w-12 rounded-full object-cover border border-[var(--border-light)]"
                     />
@@ -119,37 +129,20 @@ const Chatlist = ({
                   )}
                 </div>
 
-                {/* Name + message – unchanged */}
+                {/* Name */}
                 <div className="flex-1 min-w-0">
                   <h2 className="font-semibold truncate">{user.name}</h2>
-                  <p className="text-sm text-[var(--text-secondary)] truncate flex items-center gap-1">
-                    {!user.isUnread && (
-                      <CheckCheck
-                        size={16}
-                        className={
-                          user.isSeen
-                            ? "text-[var(--accent-blue)]"
-                            : "text-[var(--text-secondary)]"
-                        }
-                      />
-                    )}
-                    {user.message}
+                  <p className="text-sm text-[var(--text-secondary)] truncate">
+                    {user.about}
                   </p>
                 </div>
-
-                {/* Unread badge – unchanged */}
-                {user.isUnread && (
-                  <span className="ml-auto min-w-[20px] h-[20px] flex items-center justify-center text-[11px] font-bold bg-[var(--success)] text-[var(--bg-main)] rounded-full">
-                    2
-                  </span>
-                )}
               </div>
             );
           })
         )}
       </div>
 
-      {/* Floating buttons – unchanged */}
+      {/* Floating Buttons (unchanged) */}
       <div className="absolute bottom-10 right-6 flex flex-col items-center justify-center gap-4">
         <div onClick={onOpenAiChat} className="cursor-pointer">
           <AiLogo />
@@ -160,6 +153,6 @@ const Chatlist = ({
       </div>
     </div>
   );
-};
+};;
 
 export default Chatlist;
