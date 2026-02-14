@@ -13,34 +13,37 @@ import React, { useState, useRef, useEffect } from "react";
 import ContactInfo from "./ContactInfo";
 import { gsap } from "gsap";
 import { BASE_URL } from "../api/endPoint";
+import { io } from "socket.io-client";
 
+const socket = io("http://localhost:3000");
 
 const Chat = ({ user }) => {
-  const [messages, setMessages] = useState([
-    {
-      id: 1,
-      text: "Hey! Are you building the WhatsApp clone today?",
-      isOwn: false,
-    },
-    { id: 2, text: "Yep 😄 almost done!", isOwn: true },
-  ]);
+  const loggedInUser = JSON.parse(localStorage.getItem("user"));
+  const token = localStorage.getItem("token");
+
+  const [messages, setMessages] = useState([]);
+  const [chatId, setChatId] = useState(null);
   const [inputValue, setInputValue] = useState("");
   const [isContactOpen, setIsContactOpen] = useState(false);
+
   const messagesEndRef = useRef(null);
   const chatAreaRef = useRef(null);
-
-  // Skip animation on first render
   const firstRender = useRef(true);
 
+  /* =========================
+     SCROLL TO BOTTOM
+  ========================= */
   useEffect(() => {
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
   }, [messages]);
 
-  // Animate chat width when ContactInfo opens/closes, skip first render
+  /* =========================
+     ANIMATION (UNCHANGED)
+  ========================= */
   useEffect(() => {
     if (firstRender.current) {
       firstRender.current = false;
-      return; // Do nothing on first render
+      return;
     }
 
     if (chatAreaRef.current) {
@@ -52,15 +55,119 @@ const Chat = ({ user }) => {
     }
   }, [isContactOpen]);
 
-  const sendMessage = () => {
-    if (!inputValue.trim()) return;
+  /* =========================
+     SOCKET JOIN
+  ========================= */
+  useEffect(() => {
+    if (loggedInUser?._id) {
+      socket.emit("join", loggedInUser._id);
+    }
+  }, []);
+
+  /* =========================
+     RECEIVE MESSAGE
+  ========================= */
+  useEffect(() => {
+    socket.on("receiveMessage", (message) => {
+      setMessages((prev) => [
+        ...prev,
+        {
+          id: Date.now(),
+          text: message.text,
+          isOwn: message.sender === loggedInUser._id,
+        },
+      ]);
+    });
+
+    return () => {
+      socket.off("receiveMessage");
+    };
+  }, []);
+
+  /* =========================
+     CREATE OR LOAD CHAT
+  ========================= */
+  useEffect(() => {
+    if (!user || !loggedInUser) return;
+
+    const createChat = async () => {
+      const res = await fetch(`${BASE_URL}/api/chat/create`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify({ userId: user._id }),
+      });
+
+      const data = await res.json();
+      setChatId(data.chat._id);
+
+      // Load messages
+      const msgRes = await fetch(`${BASE_URL}/api/chat/${data.chat._id}`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+
+      const msgData = await msgRes.json();
+
+      const formatted = msgData.messages.map((msg) => ({
+        id: msg._id,
+        text: msg.text,
+        isOwn: msg.sender._id === loggedInUser._id,
+      }));
+
+      setMessages(formatted);
+    };
+
+    createChat();
+  }, [user]);
+
+  /* =========================
+     SEND MESSAGE
+  ========================= */
+  const sendMessage = async () => {
+    if (!inputValue.trim() || !chatId) return;
+
+    const messageText = inputValue;
+
+    // Save to DB
+    await fetch(`${BASE_URL}/api/chat/send`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+      body: JSON.stringify({
+        chatId,
+        text: messageText,
+      }),
+    });
+
+    // Emit realtime
+    socket.emit("sendMessage", {
+      senderId: loggedInUser._id,
+      receiverId: user._id,
+      text: messageText,
+    });
+
+    // Update UI instantly
     setMessages((prev) => [
       ...prev,
-      { id: Date.now(), text: inputValue, isOwn: true },
+      {
+        id: Date.now(),
+        text: messageText,
+        isOwn: true,
+      },
     ]);
+
     setInputValue("");
   };
 
+  /* =========================
+     NO USER SELECTED
+  ========================= */
   if (!user) {
     return (
       <div className="h-screen flex items-center justify-center text-[var(--text-muted)]">
@@ -69,17 +176,18 @@ const Chat = ({ user }) => {
     );
   }
 
+  /* =========================
+     UI (UNCHANGED)
+  ========================= */
   return (
     <div className="h-screen flex bg-[var(--bg-main)] text-[var(--text-main)] overflow-hidden">
-      {/* CHAT AREA */}
       <div
         ref={chatAreaRef}
-        className={`flex flex-col bg-[var(--bg-secondary)]/50 w-full`}
+        className="flex flex-col bg-[var(--bg-secondary)]/50 w-full"
       >
         {/* TOP BAR */}
         <div className="shrink-0 bg-[var(--bg-main)] px-4 py-3 border-b border-[var(--border-light)]/60">
           <div className="flex items-center justify-between">
-            {/* LEFT */}
             <div
               className="flex items-center gap-3 cursor-pointer"
               onClick={() => setIsContactOpen((p) => !p)}
@@ -103,7 +211,6 @@ const Chat = ({ user }) => {
               </div>
             </div>
 
-            {/* RIGHT */}
             <div className="flex items-center gap-6 text-[var(--text-secondary)]">
               <Video className="cursor-pointer" />
               <Phone className="cursor-pointer" />
@@ -128,7 +235,6 @@ const Chat = ({ user }) => {
               >
                 {msg.text}
                 <div className="flex items-center gap-1 text-xs mt-1 justify-end">
-                  08:24 PM
                   {msg.isOwn && (
                     <CheckCheck size={14} className="text-blue-500" />
                   )}
@@ -163,7 +269,6 @@ const Chat = ({ user }) => {
         </div>
       </div>
 
-      {/* CONTACT INFO */}
       <ContactInfo
         isOpen={isContactOpen}
         onClose={() => setIsContactOpen(false)}
