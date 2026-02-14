@@ -11,6 +11,7 @@ import { ENDPOINTS } from "../api/endPoint";
 import MyContacts from "./MyContacts";
 import AiLogo from "../ai/AiLogo";
 import { BASE_URL } from "../api/endPoint";
+import { useSelector } from "react-redux";
 
 
 const Chatlist = ({ onSelectUser, onAddContact, onOpenAiChat, onContactClick }) => {
@@ -18,6 +19,8 @@ const Chatlist = ({ onSelectUser, onAddContact, onOpenAiChat, onContactClick }) 
   const [selectedUserId, setSelectedUserId] = useState(null);
   const [searchTerm, setSearchTerm] = useState("");
   const [loading, setLoading] = useState(false);
+  const currentUser = useSelector((state) => state.auth.user);
+
 
   // ✅ Fetch all users from backend
   useEffect(() => {
@@ -44,16 +47,18 @@ const Chatlist = ({ onSelectUser, onAddContact, onOpenAiChat, onContactClick }) 
   };
 
   // ✅ Filter users
-  const filteredUsers = users.filter((user) => {
+const filteredUsers = users
+  .filter((user) => user._id !== currentUser?._id) // hide logged-in user
+  .filter((user) => {
     if (!searchTerm.trim()) return true;
 
     const term = searchTerm.toLowerCase().trim();
-
-    const nameMatch = user.name?.toLowerCase().includes(term);
-    const emailMatch = user.email?.toLowerCase().includes(term);
-
-    return nameMatch || emailMatch;
+    return (
+      user.name?.toLowerCase().includes(term) ||
+      user.email?.toLowerCase().includes(term)
+    );
   });
+
 
   return (
     <div className="h-screen relative flex flex-col bg-[var(--bg-main)] text-[var(--text-main)]">
