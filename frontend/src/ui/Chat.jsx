@@ -31,6 +31,18 @@ const Chat = ({ user }) => {
   const firstRender = useRef(true);
 
   /* =========================
+     FORMAT TIME (HH:MM AM/PM)
+  ========================= */
+  const formatTime = (date) => {
+    if (!date) return "";
+    const d = new Date(date);
+    return d.toLocaleTimeString([], {
+      hour: "2-digit",
+      minute: "2-digit",
+    });
+  };
+
+  /* =========================
      SCROLL TO BOTTOM
   ========================= */
   useEffect(() => {
@@ -75,6 +87,7 @@ const Chat = ({ user }) => {
           id: Date.now(),
           text: message.text,
           isOwn: message.sender === loggedInUser._id,
+          time: message.createdAt,
         },
       ]);
     });
@@ -91,34 +104,38 @@ const Chat = ({ user }) => {
     if (!user || !loggedInUser) return;
 
     const createChat = async () => {
-      const res = await fetch(`${BASE_URL}/api/chat/create`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`,
-        },
-        body: JSON.stringify({ userId: user._id }),
-      });
+      try {
+        const res = await fetch(`${BASE_URL}/api/chat/create`, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+          body: JSON.stringify({ userId: user._id }),
+        });
 
-      const data = await res.json();
-      setChatId(data.chat._id);
+        const data = await res.json();
+        setChatId(data.chat._id);
 
-      // Load messages
-      const msgRes = await fetch(`${BASE_URL}/api/chat/${data.chat._id}`, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      });
+        const msgRes = await fetch(`${BASE_URL}/api/chat/${data.chat._id}`, {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        });
 
-      const msgData = await msgRes.json();
+        const msgData = await msgRes.json();
 
-      const formatted = msgData.messages.map((msg) => ({
-        id: msg._id,
-        text: msg.text,
-        isOwn: msg.sender._id === loggedInUser._id,
-      }));
+        const formatted = msgData.messages.map((msg) => ({
+          id: msg._id,
+          text: msg.text,
+          isOwn: msg.sender._id === loggedInUser._id,
+          time: msg.createdAt,
+        }));
 
-      setMessages(formatted);
+        setMessages(formatted);
+      } catch (error) {
+        console.error("Chat load error:", error);
+      }
     };
 
     createChat();
@@ -132,37 +149,42 @@ const Chat = ({ user }) => {
 
     const messageText = inputValue;
 
-    // Save to DB
-    await fetch(`${BASE_URL}/api/chat/send`, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${token}`,
-      },
-      body: JSON.stringify({
-        chatId,
+    try {
+      // Save to DB
+      await fetch(`${BASE_URL}/api/chat/send`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify({
+          chatId,
+          text: messageText,
+        }),
+      });
+
+      // Emit realtime
+      socket.emit("sendMessage", {
+        senderId: loggedInUser._id,
+        receiverId: user._id,
         text: messageText,
-      }),
-    });
+      });
 
-    // Emit realtime
-    socket.emit("sendMessage", {
-      senderId: loggedInUser._id,
-      receiverId: user._id,
-      text: messageText,
-    });
+      // Update UI instantly
+      setMessages((prev) => [
+        ...prev,
+        {
+          id: Date.now(),
+          text: messageText,
+          isOwn: true,
+          time: new Date(),
+        },
+      ]);
 
-    // Update UI instantly
-    setMessages((prev) => [
-      ...prev,
-      {
-        id: Date.now(),
-        text: messageText,
-        isOwn: true,
-      },
-    ]);
-
-    setInputValue("");
+      setInputValue("");
+    } catch (error) {
+      console.error("Send message error:", error);
+    }
   };
 
   /* =========================
@@ -227,7 +249,7 @@ const Chat = ({ user }) => {
               className={`flex ${msg.isOwn ? "justify-end" : "justify-start"}`}
             >
               <div
-                className={`max-w-[70%] px-4 py-2.5 rounded-2xl text-sm text-[var(--text-secondary)] shadow-sm ${
+                className={`max-w-[70%] px-4 py-2.5 flex justify-between items-end gap-4 text-justify min-w-[125px] rounded-2xl text-sm text-[var(--text-secondary)] shadow-sm ${
                   msg.isOwn
                     ? "bg-[var(--bg-chat)] rounded-br-none"
                     : "bg-[var(--bg-other-chat)] rounded-bl-none"
@@ -235,8 +257,9 @@ const Chat = ({ user }) => {
               >
                 {msg.text}
                 <div className="flex items-center gap-1 text-xs mt-1 justify-end">
+                  {formatTime(msg.time)}
                   {msg.isOwn && (
-                    <CheckCheck size={14} className="text-blue-500" />
+                    <CheckCheck size={14} className="text-[var(--accent-blue)] " />
                   )}
                 </div>
               </div>
