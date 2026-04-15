@@ -67,7 +67,7 @@ exports.sendMessage = async (req, res) => {
 };
 
 /*
-🔹 Get Messages
+Get Messages
 */
 exports.getMessages = async (req, res) => {
   try {
