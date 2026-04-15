@@ -29,7 +29,7 @@ exports.updateProfile = async (req, res) => {
   }
 };
 
-// ✅ Upload Profile Image
+// Upload Profile Image
 exports.uploadProfileImage = async (req, res) => {
   try {
     const userId = req.user.id;
