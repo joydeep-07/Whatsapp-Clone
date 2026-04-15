@@ -2,7 +2,7 @@ const User = require("../models/User.model");
 const path = require("path");
 const fs = require("fs");
 
-// ✅ Update Name & About
+// Update Name & About
 exports.updateProfile = async (req, res) => {
   try {
     const userId = req.user.id; // from auth middleware
