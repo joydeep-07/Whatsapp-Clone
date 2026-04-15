@@ -1,7 +1,7 @@
 const Chat = require("../models/Chat.model");
 
 /*
-🔹 Create or Get Chat Between Two Users
+Create or Get Chat Between Two Users
 */
 exports.createOrGetChat = async (req, res) => {
   try {
