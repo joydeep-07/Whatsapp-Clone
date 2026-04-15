@@ -30,7 +30,7 @@ exports.createOrGetChat = async (req, res) => {
 };
 
 /*
-🔹 Send Message
+Send Message
 */
 exports.sendMessage = async (req, res) => {
   try {
