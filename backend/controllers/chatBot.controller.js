@@ -49,7 +49,7 @@ exports.sendMessage = async (req, res) => {
       })),
     ];
 
-    // 🔥 Call Groq
+    // Call Groq
     const completion = await client.chat.completions.create({
       model: "llama-3.3-70b-versatile",
       messages: conversation,
